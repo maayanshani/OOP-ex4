@@ -20,16 +20,37 @@ package pepse.util;
  * }
  * </pre>
  */
-public class Constants {
+public final class Constants {
 
-    /** Numeric constants */
-    public static final String EXAMPLE = "example";
+    /**
+     * TODO: Make sure you add here only constants that are not PRIVATE!
+     * There are some constants that should remain inside their respective classes,
+     * such as BLOCK_SIZE and BASE_GROUND_COLOR.
+     */
 
     /** String constants */
-    public static final int num_EXAMPLE = 1;
+    public static final String
+            EXAMPLE    = "example",
+            AVATAR     = "avatar",
+            BLOCK      = "block",
+            GROUND     = "ground",
+            SKY        = "sky",
+            TERRAIN    = "terrain",
+            SUN        = "sun",
+            SUN_HALO   = "sunHalo";
 
+    /** Numeric constants */
+    public static final int
+            NUM_EXAMPLE = 1,
+            RANDOM_SEED = 42,
+            NOISE_FACTOR = 200,
+            NOISE_GENERATOR_START_POINT = 100;
+
+    public static final float SCALE_HEIGHT_X0 = (float) 2 / 3;
 
     /** Boolean constants */
+    // Add boolean constants as needed here.
 
-
+    // Private constructor to prevent instantiation
+    private Constants() { }
 }
