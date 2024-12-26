@@ -1,4 +1,4 @@
 package pepse.world;
 
-public class Avatar {
+public class Block {
 }

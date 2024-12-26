@@ -1,0 +1,75 @@
+API:
+pepse.util - we will need to add more classes
+
+CLASSES TO ADD:
+1. already in the given API:
+    Block - every rectangle in the screen (extends GameObject)
+    Terrain - create all ground blocks (not GameObject)
+            can get the ground height in given coordinate
+            create a list of all ground blocks in given x range
+    Avatar - create an avatar who moves to the sided and jump. Platformer class is given, we can use for inspiration.
+    Flora - create trees
+
+2. not in the API:
+    Energy class?
+    Related Flora classes:
+    - create static trees
+    - leaves moving strategy
+    - fruits
+    Related Clouds classes:
+    - moving strategy
+    - rain strategy
+
+
+DESIGN QUESTIONS:
+- our layers (background, ground, sun and sunHalo, night, trees trunk, trees leaves, avatar, fruits)
+- the advantages of Block class instead of just GameObject
+- the "create" methods for Night, Sun, SunHalo (inheritance?)
+- how to update the sunHalo location (override update or use addComponent with lambda)?
+- showing the energy - how to update it? contain a class or use callback?
+- changing in the avatar - how to update other object obout a jump?
+
+
+TASKS:
+1. Sky
+    simple object add
+
+2. Ground
+    new class - Block (How?)
+    new class - Terrain (How?)
+
+3. Light and Darkness
+    new class - Night, adding new Block object
+    using Transition - changing transparency with Callback (code is given)
+
+4. Sun
+    new class - Sun, creating new GameObject
+    using Transition
+
+5. Sun Halo
+    new class - SunHalo, creating new GameObject
+    update location
+
+6. Add character
+    new class - Avatar, creating an avatar
+    constructor is given
+    update - gain and waste energy methods
+    addEnergy method
+    animate and jumping
+
+7. Flora
+    new class - Flora, with a method who create trees
+    create static trees
+    - leaf moves
+        add transitions with delays
+    - add fruits
+        add fruits on the tree, create collision strategy
+
+8. Cloud
+    create new Block for a cloud
+    create cloud moves
+    create rain
+
+9. Infinity World
+    new class Camera?
+    create new object while running, using Random seed
