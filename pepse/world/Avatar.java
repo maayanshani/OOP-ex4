@@ -20,6 +20,7 @@ public class Avatar extends GameObject {
     private static final Color AVATAR_COLOR = Color.DARK_GRAY;
 
     private UserInputListener inputListener;
+    private float energy;
 
     public Avatar(Vector2 topLeftCorner,
                   UserInputListener inputListener,
@@ -30,18 +31,63 @@ public class Avatar extends GameObject {
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         transform().setAccelerationY(GRAVITY);
         this.inputListener = inputListener;
+        this.energy = Constants.MAX_ENERGY;
     }
+
+    private boolean canJump() {
+        return energy >= Constants.JUMP_ENERGY;
+    }
+
+    private boolean canRun() {
+        return energy >= Constants.RUN_ENERGY;
+    }
+
+    private boolean idleState() {
+        return transform().getVelocity().equals(Vector2.ZERO);
+    }
+
+    private void updateEnergy(String action) {
+        switch (action) {
+            case Constants.RUN -> energy -= Constants.RUN_ENERGY;
+            case Constants.JUMP -> energy -= Constants.JUMP_ENERGY;
+            case Constants.IDLE -> energy += Constants.IDLE_ENERGY;
+            default -> {}
+        }
+        if (energy > Constants.MAX_ENERGY) {
+            energy = Constants.MAX_ENERGY;
+        }
+    }
+
+    // TODO: added to API
+    public float getEnergy() {
+        return energy;
+    }
+
+    public void addEnergy(float energyToAdd) {
+        this.energy += energyToAdd;
+    }
+
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         float xVel = 0;
-        if(inputListener.isKeyPressed(KeyEvent.VK_LEFT))
+        if(inputListener.isKeyPressed(KeyEvent.VK_LEFT) && canRun()){
             xVel -= VELOCITY_X;
-        if(inputListener.isKeyPressed(KeyEvent.VK_RIGHT))
+            updateEnergy(Constants.RUN);
+        }
+        if(inputListener.isKeyPressed(KeyEvent.VK_RIGHT) && canRun()){
             xVel += VELOCITY_X;
+            updateEnergy(Constants.RUN);
+        }
         transform().setVelocityX(xVel);
-        if(inputListener.isKeyPressed(KeyEvent.VK_SPACE) && getVelocity().y() == 0)
+        if(inputListener.isKeyPressed(KeyEvent.VK_SPACE) && getVelocity().y() == 0 && canJump()) {
             transform().setVelocityY(VELOCITY_Y);
+            updateEnergy(Constants.JUMP);
+        }
+        if (idleState()) {
+            updateEnergy(Constants.IDLE);
+        }
     }
+
 }

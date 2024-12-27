@@ -42,21 +42,37 @@ public final class Constants {
             TERRAIN    = "terrain",
             SUN        = "sun",
             SUN_HALO   = "sunHalo",
-            NIGHT      = "night";
+            NIGHT      = "night",
+            RUN        = "run",
+            JUMP       = "jump",
+            IDLE       = "idle";
 
-    public static final String AVATAR_IMAGE_PATH = "assets/idle_0.png";
+    // image paths
+    public static final String
+            AVATAR_IMAGE_PATH = "assets/idle_0.png";
+
+    // System out
+    public static final String
+            ENERGY_TEXT_FORMAT = "Energy: %.2f";
 
     /** Numeric constants */
     public static final int
             NUM_EXAMPLE = 1,
-
             RANDOM_SEED = 42,
 
             NOISE_FACTOR = 200,
             NOISE_GENERATOR_START_POINT = 100,
-
             SUN_SIZE = 300,
-            DAY_LONG = 30;
+            DAY_LONG = 30,
+            ENERGY_TEXT_LOCATION = 20,
+            ENERGY_TEXT_SIZE = 30;
+
+
+    public static final float
+            MAX_ENERGY = 100,
+            IDLE_ENERGY = 1,
+            RUN_ENERGY = 0.5F,
+            JUMP_ENERGY = 10;
 
 
 
