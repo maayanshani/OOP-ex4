@@ -49,7 +49,9 @@ public final class Constants {
 
     // image paths
     public static final String
-            AVATAR_IMAGE_PATH = "assets/idle_0.png";
+            AVATAR_IDLE_PATH_FORMAT = "assets/idle_%d.png",
+            AVATAR_RUN_PATH_FORMAT = "assets/run_%d.png",
+            AVATAR_JUMP_PATH_FORMAT = "assets/jump_%d.png";
 
     // System out
     public static final String
@@ -65,7 +67,11 @@ public final class Constants {
             SUN_SIZE = 300,
             DAY_LONG = 30,
             ENERGY_TEXT_LOCATION = 20,
-            ENERGY_TEXT_SIZE = 30;
+            ENERGY_TEXT_SIZE = 30,
+            NUM_IDLE_FRAMES = 4,
+            NUM_RUN_FRAMES = 6,
+            NUM_JUMP_FRAMES = 4,
+            AVATAR_SIZE = 50;
 
 
     public static final float
@@ -73,6 +79,7 @@ public final class Constants {
             IDLE_ENERGY = 1,
             RUN_ENERGY = 0.5F,
             JUMP_ENERGY = 10;
+
 
 
 

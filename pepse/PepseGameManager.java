@@ -40,6 +40,7 @@ public class PepseGameManager extends GameManager {
         Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
         List<Block> blockList = terrain.createInRange(0, (int) windowDimensions.x());
         for (Block block : blockList) {
+            block.setTag(Constants.GROUND);
             this.gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
         }
 
@@ -54,6 +55,7 @@ public class PepseGameManager extends GameManager {
         // Add avatar
         Vector2 startLocationAvatar = new Vector2(windowDimensions.x() / 2, 0);
         avatar = new Avatar(startLocationAvatar, inputListener, imageReader);
+        avatar.setTag(Constants.AVATAR);
         this.gameObjects().addGameObject(avatar, Constants.AVATAR_LAYER);
 
         // Add energy display
