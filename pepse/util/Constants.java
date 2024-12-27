@@ -44,6 +44,8 @@ public final class Constants {
             SUN_HALO   = "sunHalo",
             NIGHT      = "night";
 
+    public static final String AVATAR_IMAGE_PATH = "assets/idle_0.png";
+
     /** Numeric constants */
     public static final int
             NUM_EXAMPLE = 1,
@@ -77,6 +79,7 @@ public final class Constants {
     /** Numeric constants */
     public static final float
             SCALE_HEIGHT_X0 = (float) 2 / 3,
+
             HALF = 0.5f,
             QUARTER = 0.25f;
 

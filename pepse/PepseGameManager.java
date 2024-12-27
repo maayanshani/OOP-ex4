@@ -9,6 +9,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.util.Vector2;
 import pepse.util.Constants;
+import pepse.world.Avatar;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
@@ -31,15 +32,14 @@ public class PepseGameManager extends GameManager {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         Vector2 windowDimensions = windowController.getWindowDimensions();
 
+        //
         // add sky:
         GameObject sky = Sky.create(windowDimensions);
         this.gameObjects().addGameObject(sky, Constants.SKY_LAYER);
 
         // add terrain:
-        System.out.println(windowDimensions);
         Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
         List<Block> blockList = terrain.createInRange(0, (int) windowDimensions.x());
-        System.out.println(blockList.size());
         for (Block block : blockList) {
             // TODO: LAYERS
             this.gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
@@ -53,7 +53,10 @@ public class PepseGameManager extends GameManager {
         GameObject sun = Sun.create(windowDimensions, Constants.DAY_LONG);
         this.gameObjects().addGameObject(sun, Constants.SUN_LAYER);
 
-
+        // add avatar
+        Vector2 startLocationAvatar = new Vector2(windowDimensions.x() / 2 , 0);
+        Avatar avatar = new Avatar(startLocationAvatar, inputListener, imageReader);
+        this.gameObjects().addGameObject(avatar);
 
 
     }
