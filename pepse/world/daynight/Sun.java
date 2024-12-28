@@ -7,32 +7,42 @@ import danogl.gui.rendering.OvalRenderable;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.Constants;
+import pepse.world.Terrain;
 
 import java.awt.*;
 
 public class Sun {
     public static GameObject create(Vector2 windowDimensions, float cycleLength) {
+        Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
+
         // create sun object:
         float sunX = windowDimensions.x()*Constants.HALF - Constants.SUN_SIZE*Constants.HALF;
-        float sunY = windowDimensions.y()*Constants.QUARTER - Constants.SUN_SIZE*Constants.HALF;
+        float sunY = (windowDimensions.y() - terrain.groundHeightAt(sunX)) * Constants.HALF;
+        Vector2 initialSunCenter = new Vector2(sunX, sunY);
+
         GameObject sun = new GameObject(
-                new Vector2(sunX, sunY),
+                initialSunCenter, // doesn't matter  because the Transition
                 new Vector2(Constants.SUN_SIZE, Constants.SUN_SIZE),
                 new OvalRenderable(Color.YELLOW));
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sun.setTag(Constants.SUN);
 
-        // TODO:
         // add transition, no need to use the object created
-//        new Transition<Float>(
-//                night, // the game object being changes
-//                night.renderer()::setOpaqueness, // the method to call
-//                0f, // initial transition value
-//                Constants.MIDNIGHT_OPACITY, // final transition value
-//                Transition.CUBIC_INTERPOLATOR_FLOAT, // use a cubic interpolator
-//                cycleLength/Constants.TWO, // transition fully over half a day
-//                Transition.TransitionType.TRANSITION_BACK_AND_FORTH, // transition ENUM value
-//                null);
+        float cycleCenterX = windowDimensions.x()*Constants.HALF;
+        float cycleCenterY = terrain.groundHeightAt(cycleCenterX);
+        Vector2 cycleCenter = new Vector2(cycleCenterX, cycleCenterY);
+
+        new Transition<Float>(
+                sun, // the game object being changes
+                (Float angle) -> sun.setCenter(initialSunCenter.subtract(cycleCenter)
+                                .rotated(angle)
+                                .add(cycleCenter)), // the method to call
+                Constants.ANGLE_MIN, // initial transition value
+                Constants.ANGLE_MAX, // final transition value
+                Transition.LINEAR_INTERPOLATOR_FLOAT, // use a cubic interpolator
+                cycleLength, // transition fully over half a day
+                Transition.TransitionType.TRANSITION_LOOP, // transition ENUM value
+                null);
 
         return sun;
     }

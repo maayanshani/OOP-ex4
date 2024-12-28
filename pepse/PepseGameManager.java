@@ -12,6 +12,7 @@ import pepse.util.Constants;
 import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
+import pepse.world.daynight.SunHalo;
 
 import java.util.List;
 
@@ -41,16 +42,19 @@ public class PepseGameManager extends GameManager {
         List<Block> blockList = terrain.createInRange(0, (int) windowDimensions.x());
         for (Block block : blockList) {
             block.setTag(Constants.GROUND);
-            this.gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
+            this.gameObjects().addGameObject(block, Constants.GROUND_LAYER);
         }
 
         // Add light and darkness cycle
         GameObject night = Night.create(windowDimensions, Constants.DAY_LONG);
         this.gameObjects().addGameObject(night, Constants.NIGHT_LAYER);
 
-        // Add sun
+        // Add sun and sun halo:
         GameObject sun = Sun.create(windowDimensions, Constants.DAY_LONG);
         this.gameObjects().addGameObject(sun, Constants.SUN_LAYER);
+
+        GameObject sunHalo = SunHalo.create(sun);
+        this.gameObjects().addGameObject(sunHalo, Constants.SUN_HALO_LAYER);
 
         // Add avatar
         Vector2 startLocationAvatar = new Vector2(windowDimensions.x() / 2, 0);
