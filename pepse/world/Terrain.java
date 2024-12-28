@@ -1,3 +1,7 @@
+/**
+ * Represents the terrain in the game world, handling the creation of blocks based on noise generation.
+ * The terrain includes height calculations and dynamic block generation within a given range.
+ */
 package pepse.world;
 
 import danogl.gui.rendering.RectangleRenderable;
@@ -11,14 +15,44 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Todo: what should i do with the seed?
+ */
+
+/**
+ * Represents the terrain in the game world, managing the creation and layout of blocks
+ * that form the ground. The terrain dynamically generates blocks based on a noise function,
+ * providing a natural and varied appearance.
+ *
+ * - The terrain height is calculated using a Perlin noise generator.
+ * - Blocks are created in columns to represent the ground and its depth.
+ * - The terrain supports dynamic generation for a specified horizontal range.
+ *
+ * This class allows for easy integration of procedurally generated ground into the game.
+ */
 public class Terrain {
+    /** The noise generator used to create random but smooth terrain heights. */
     private final NoiseGenerator noiseGenerator;
+
+    /** The seed used for initializing the noise generator, ensuring consistent terrain generation. */
     private final int seed;
+
+    /** The base height of the ground at the x = 0 position. */
     private final int groundHeightAtX0;
 
+    /** The base color of the terrain blocks. */
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
+
+    /** The depth of the terrain in terms of the number of blocks below the surface. */
     private static final int TERRAIN_DEPTH = 20;
 
+    /**
+     * Constructs a new Terrain object.
+     *
+     * @param windowDimensions The dimensions of the game window, used to calculate initial ground height.
+     * @param seed The seed for noise generation to ensure consistent terrain structure.
+     */
     public Terrain(Vector2 windowDimensions, int seed) {
         this.groundHeightAtX0 = (int) (windowDimensions.y() * Constants.SCALE_HEIGHT_X0);
         this.seed = seed;
@@ -27,10 +61,23 @@ public class Terrain {
         noiseGenerator = new NoiseGenerator(seed, Constants.NOISE_GENERATOR_START_POINT);
     }
 
+    /**
+     * Calculates the ground height at a specific x-coordinate based on noise generation.
+     *
+     * @param x The x-coordinate to calculate the ground height for.
+     * @return The calculated ground height at the specified x-coordinate.
+     */
     public float groundHeightAt(float x) {
         return (float) (groundHeightAtX0 + noiseGenerator.noise(x, Constants.NOISE_FACTOR));
     }
 
+    /**
+     * Creates a list of blocks representing the terrain within the specified x-coordinate range.
+     *
+     * @param minX The minimum x-coordinate of the range.
+     * @param maxX The maximum x-coordinate of the range.
+     * @return A list of blocks representing the terrain in the specified range.
+     */
     public List<Block> createInRange(int minX, int maxX) {
         List<Block> blockList = new ArrayList<>();
         Renderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
