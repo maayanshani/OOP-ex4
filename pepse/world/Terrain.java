@@ -14,6 +14,7 @@ import pepse.util.NoiseGenerator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -47,6 +48,9 @@ public class Terrain {
     /** The depth of the terrain in terms of the number of blocks below the surface. */
     private static final int TERRAIN_DEPTH = 20;
 
+    /** Random number generator for color variation. */
+    private static final Random RANDOM = new Random();
+
     /**
      * Constructs a new Terrain object.
      *
@@ -72,6 +76,18 @@ public class Terrain {
     }
 
     /**
+     * Randomizes the color of the terrain blocks slightly by adjusting the RGB values.
+     *
+     * @return A randomized color based on the base ground color.
+     */
+    private Color getRandomizedColor() {
+        int red = Math.min(255, Math.max(0, BASE_GROUND_COLOR.getRed() + RANDOM.nextInt(21) - 10));
+        int green = Math.min(255, Math.max(0, BASE_GROUND_COLOR.getGreen() + RANDOM.nextInt(21) - 10));
+        int blue = Math.min(255, Math.max(0, BASE_GROUND_COLOR.getBlue() + RANDOM.nextInt(21) - 10));
+        return new Color(red, green, blue);
+    }
+
+    /**
      * Creates a list of blocks representing the terrain within the specified x-coordinate range.
      *
      * @param minX The minimum x-coordinate of the range.
@@ -80,7 +96,6 @@ public class Terrain {
      */
     public List<Block> createInRange(int minX, int maxX) {
         List<Block> blockList = new ArrayList<>();
-        Renderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
 
         // Round minX and maxX to bounds divisible by Block.SIZE
         int adjustedMinX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
@@ -94,6 +109,7 @@ public class Terrain {
             // Create a column of blocks with a fixed depth (TERRAIN_DEPTH)
             for (int y = 0; y < TERRAIN_DEPTH; y++) {
                 int blockY = (int) groundHeight + (y * Block.SIZE);
+                Renderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(getRandomizedColor()));
                 Block block = new Block(new Vector2(x, blockY), renderable);
                 block.setTag(Constants.GROUND);
                 blockList.add(block);
