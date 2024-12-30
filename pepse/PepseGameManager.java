@@ -13,6 +13,7 @@ import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Tree;
 
 import java.util.List;
 
@@ -67,6 +68,11 @@ public class PepseGameManager extends GameManager {
                 () -> avatar.getEnergy() // Callback to get the avatar's energy
         );
         this.gameObjects().addGameObject(energyDisplay, Constants.ENERGY_LAYER);
+
+        // Add trees:
+        // TODO: only for tests:
+        GameObject tree = Tree.create(imageReader, new Vector2(100, 100));
+        this.gameObjects().addGameObject(tree, Constants.TREES_TRUNKS_LAYER);
 
         // Add cloud
         GameObject cloud = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);

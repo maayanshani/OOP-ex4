@@ -11,9 +11,9 @@ import pepse.world.Terrain;
 
 import java.awt.*;
 
-// TODO: maybe the sun should be a bit smaller. i changed from 300 to 180
 public class Sun {
     public static GameObject create(Vector2 windowDimensions, float cycleLength) {
+        // TODO: maybe get callback instead of creat Terrain?
         Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
 
         // create sun object:

@@ -43,6 +43,9 @@ public final class Constants {
             TERRAIN    = "terrain",
             SUN        = "sun",
             SUN_HALO   = "sunHalo",
+            TREE       = "tree",
+            LEAF       = "leaf",
+            FRUIT      = "fruit",
             NIGHT      = "night",
             RUN        = "run",
             JUMP       = "jump",
@@ -52,7 +55,8 @@ public final class Constants {
     public static final String
             AVATAR_IDLE_PATH_FORMAT = "assets/idle_%d.png",
             AVATAR_RUN_PATH_FORMAT = "assets/run_%d.png",
-            AVATAR_JUMP_PATH_FORMAT = "assets/jump_%d.png";
+            AVATAR_JUMP_PATH_FORMAT = "assets/jump_%d.png",
+            TRUNK_IMAGE_PATH = "assets/trunk.png";
 
     // System out
     public static final String
@@ -67,6 +71,9 @@ public final class Constants {
             NOISE_FACTOR = 200,
             NOISE_GENERATOR_START_POINT = 100,
             SUN_SIZE = 180,
+            TREE_TRUNK_WIDTH = 100,
+            TREE_TRUNK_HEIGHT_MIN = 200,
+            TREE_TRUNK_HEIGHT_MAX = 400,
             DAY_LONG = 30,
             CLOUD_CYCLE = 10,
             ENERGY_TEXT_LOCATION = 20,
@@ -112,7 +119,9 @@ public final class Constants {
     public static final Color
             BASIC_SKY_COLOR = Color.decode("#80C6E5"),
             // TODO: is it okay to use const for it?
-            SUN_HALO_COLOR = new Color(255, 255, 0, 20);
+            SUN_HALO_COLOR = new Color(255, 255, 0, 20),
+            TRUNK_COLOR = new Color(100, 50, 20),
+            LEAF_COLOR = new Color(50, 200, 30);
 
 
     public static final Float MIDNIGHT_OPACITY = 0.5f;
