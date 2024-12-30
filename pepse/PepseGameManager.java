@@ -71,8 +71,17 @@ public class PepseGameManager extends GameManager {
 
         // Add trees:
         // TODO: only for tests:
-        GameObject tree = Tree.create(imageReader, new Vector2(100, 100));
-        this.gameObjects().addGameObject(tree, Constants.TREES_TRUNKS_LAYER);
+//        GameObject tree = Tree.create(imageReader, new Vector2(100, 100));
+//        this.gameObjects().addGameObject(tree, Constants.TREES_TRUNKS_LAYER);
+        Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
+        Tree tree = new Tree(imageReader, curCoor);
+        // add trunk:
+        this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
+
+        // add leaves:
+        for (GameObject leaf: tree.getLeaves()) {
+            this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
+        }
 
         // Add cloud
         GameObject cloud = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);

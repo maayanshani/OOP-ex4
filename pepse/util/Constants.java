@@ -74,7 +74,9 @@ public final class Constants {
             TREE_TRUNK_WIDTH = 100,
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 400,
-            LEAF_SIZE = 40,
+
+            NUM_OF_LEAVES_IN_ROW = 8,
+
             DAY_LONG = 30,
             CLOUD_CYCLE = 10,
             ENERGY_TEXT_LOCATION = 20,
@@ -94,10 +96,17 @@ public final class Constants {
             IDLE_ENERGY = 1,
             RUN_ENERGY = 0.5F,
             JUMP_ENERGY = 10,
-            ANGLE_MAX = 360,
-            ANGLE_MIN = 0,
+            SUN_ANGLE_MAX = 360,
+            SUN_ANGLE_MIN = 0,
+            LEAF_ANGLE_MAX = 25,
+            LEAF_ANGLE_MIN = 0,
+            LEAF_MOVES_TIME = 2f,
+            LEAF_MAX_WAIT_TIME = 1f,
             SCALE_HEIGHT_X0 = (float) 2 / 3,
-            HALO_MULT_RATIO = 1.5f,
+            HALO_MULT_RATIO = 1f,
+            LEAF_SIZE = 20,
+            LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
+            LEAF_SPACE = 2,
 
             HALF = 0.5f,
             QUARTER = 0.25f;

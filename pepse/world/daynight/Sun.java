@@ -38,8 +38,8 @@ public class Sun {
                 (Float angle) -> sun.setCenter(initialSunCenter.subtract(cycleCenter)
                                 .rotated(angle)
                                 .add(cycleCenter)), // the method to call
-                Constants.ANGLE_MIN, // initial transition value
-                Constants.ANGLE_MAX, // final transition value
+                Constants.SUN_ANGLE_MIN, // initial transition value
+                Constants.SUN_ANGLE_MAX, // final transition value
                 Transition.LINEAR_INTERPOLATOR_FLOAT, // use a cubic interpolator
                 cycleLength, // transition fully over half a day
                 Transition.TransitionType.TRANSITION_LOOP, // transition ENUM value
