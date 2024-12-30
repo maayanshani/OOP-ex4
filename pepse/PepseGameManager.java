@@ -66,11 +66,8 @@ public class PepseGameManager extends GameManager {
         EnergyDisplay energyDisplay = new EnergyDisplay(Vector2.ONES.mult(Constants.ENERGY_TEXT_LOCATION),
                 () -> avatar.getEnergy() // Callback to get the avatar's energy
         );
-        this.gameObjects().addGameObject(energyDisplay, Constants.AVATAR_LAYER);
-
-        // Add cloud
-        GameObject cloud = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);
-        this.gameObjects().addGameObject(cloud, Constants.CLOUD_LAYER);
+        // TODO: MAAYAN - note i changed the layer from avatar to energy witch is the UI layer, according to the manual
+        this.gameObjects().addGameObject(energyDisplay, Constants.ENERGY_LAYER);
     }
 
 
