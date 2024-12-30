@@ -91,14 +91,14 @@ public final class Constants {
     /** Layers constants */
     public static final int
             SKY_LAYER = Layer.BACKGROUND,
-            SUN_HALO_LAYER = Layer.STATIC_OBJECTS-2,
-            SUN_LAYER = Layer.STATIC_OBJECTS-1,
+            SUN_HALO_LAYER = Layer.STATIC_OBJECTS-20,
+            SUN_LAYER = Layer.STATIC_OBJECTS-10,
             GROUND_LAYER = Layer.STATIC_OBJECTS,
-            CLOUDS_LAYER = Layer.STATIC_OBJECTS+2,
-            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS+3,
-            TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS+4,
+            CLOUDS_LAYER = Layer.STATIC_OBJECTS+20,
+            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS+30,
+            TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS+40,
             AVATAR_LAYER = Layer.DEFAULT,
-            NIGHT_LAYER = Layer.DEFAULT+1,
+            NIGHT_LAYER = Layer.DEFAULT+10,
             ENERGY_LAYER = Layer.UI;
 
     /** Colors constants */
