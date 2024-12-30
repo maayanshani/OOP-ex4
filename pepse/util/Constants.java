@@ -74,6 +74,7 @@ public final class Constants {
             TREE_TRUNK_WIDTH = 100,
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 400,
+            LEAF_SIZE = 40,
             DAY_LONG = 30,
             CLOUD_CYCLE = 10,
             ENERGY_TEXT_LOCATION = 20,

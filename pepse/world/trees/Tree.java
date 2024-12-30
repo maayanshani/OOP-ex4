@@ -18,8 +18,6 @@ public class Tree {
     private static final Random seededRandom = new Random(); // Single instance for consistency
 
     public static GameObject create(ImageReader imageReader, Vector2 coordinate) {
-        // TODO: maybe get callback instead of creat Terrain?
-//        Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
 
         // create trunk:
         Renderable trunkImage = imageReader.readImage(Constants.TRUNK_IMAGE_PATH, true);
