@@ -39,6 +39,7 @@ public final class Constants {
             BLOCK      = "block",
             GROUND     = "ground",
             SKY        = "sky",
+            CLOUD      = "cloud",
             TERRAIN    = "terrain",
             SUN        = "sun",
             SUN_HALO   = "sunHalo",
@@ -65,14 +66,20 @@ public final class Constants {
 
             NOISE_FACTOR = 200,
             NOISE_GENERATOR_START_POINT = 100,
-            SUN_SIZE = 300,
+            SUN_SIZE = 180,
             DAY_LONG = 30,
+            CLOUD_CYCLE = 10,
             ENERGY_TEXT_LOCATION = 20,
             ENERGY_TEXT_SIZE = 30,
             NUM_IDLE_FRAMES = 4,
             NUM_RUN_FRAMES = 6,
             NUM_JUMP_FRAMES = 4,
-            AVATAR_SIZE = 50;
+            AVATAR_SIZE = 50,
+            COLOR_VARIATION = 10,
+            COLOR_MIN = 0,
+            COLOR_MAX = 255;
+
+
 
     public static final float
             MAX_ENERGY = 100,
@@ -94,7 +101,7 @@ public final class Constants {
             SUN_HALO_LAYER = Layer.STATIC_OBJECTS-2,
             SUN_LAYER = Layer.STATIC_OBJECTS-1,
             GROUND_LAYER = Layer.STATIC_OBJECTS,
-            CLOUDS_LAYER = Layer.STATIC_OBJECTS+2,
+            CLOUD_LAYER = Layer.STATIC_OBJECTS+2,
             TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS+3,
             TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS+4,
             AVATAR_LAYER = Layer.DEFAULT,

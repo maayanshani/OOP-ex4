@@ -81,11 +81,12 @@ public class Terrain {
      * @return A randomized color based on the base ground color.
      */
     private Color getRandomizedColor() {
-        int red = Math.min(255, Math.max(0, BASE_GROUND_COLOR.getRed() + RANDOM.nextInt(21) - 10));
-        int green = Math.min(255, Math.max(0, BASE_GROUND_COLOR.getGreen() + RANDOM.nextInt(21) - 10));
-        int blue = Math.min(255, Math.max(0, BASE_GROUND_COLOR.getBlue() + RANDOM.nextInt(21) - 10));
+        int red = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN, BASE_GROUND_COLOR.getRed() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+        int green = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN, BASE_GROUND_COLOR.getGreen() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+        int blue = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN, BASE_GROUND_COLOR.getBlue() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
         return new Color(red, green, blue);
     }
+
 
     /**
      * Creates a list of blocks representing the terrain within the specified x-coordinate range.

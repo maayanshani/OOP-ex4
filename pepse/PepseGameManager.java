@@ -67,6 +67,10 @@ public class PepseGameManager extends GameManager {
                 () -> avatar.getEnergy() // Callback to get the avatar's energy
         );
         this.gameObjects().addGameObject(energyDisplay, Constants.AVATAR_LAYER);
+
+        // Add cloud
+        GameObject cloud = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);
+        this.gameObjects().addGameObject(cloud, Constants.CLOUD_LAYER);
     }
 
 
