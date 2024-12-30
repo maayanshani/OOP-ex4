@@ -103,7 +103,7 @@ public final class Constants {
             LEAF_MOVES_TIME = 2f,
             LEAF_MAX_WAIT_TIME = 1f,
             SCALE_HEIGHT_X0 = (float) 2 / 3,
-            HALO_MULT_RATIO = 1f,
+            HALO_MULT_RATIO = 1.5f,
             LEAF_SIZE = 20,
             LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
             LEAF_SPACE = 2,
