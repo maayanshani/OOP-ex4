@@ -20,6 +20,7 @@ import pepse.world.trees.Tree;
 import java.util.List;
 
 public class PepseGameManager extends GameManager {
+
     // TODO: where is the right place to put it?
     @FunctionalInterface
     public interface ObjectFunction {
@@ -32,8 +33,9 @@ public class PepseGameManager extends GameManager {
         float apply(float x);
     }
 
-    private Avatar avatar;
     private Vector2 windowDimensions;
+    private Avatar avatar;
+    private Cloud cloud;
 
     //    private Vector2 windowDimensions;
     public PepseGameManager() {
@@ -122,13 +124,21 @@ public class PepseGameManager extends GameManager {
 //        }
 
         // Add cloud
-        // Somewhere in initializeGame():
-        Vector2 cloudPosition = new Vector2(100, 50); // Adjust position as needed
-        List<Block> cloudBlocks = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);
+        this.cloud = new Cloud(windowDimensions, Constants.CLOUD_CYCLE, imageReader);
+        List<Block> cloudBlocks = cloud.getCloudBlocks();
         for (Block block : cloudBlocks) {
             this.gameObjects().addGameObject(block, Constants.CLOUD_LAYER);
         }
 
+        avatar.setOnJumpCallback(this::createRainJump);
+
+    }
+
+    public void createRainJump(){
+        List<GameObject> waterDrops = cloud.createRain(this.gameObjects()::removeGameObject);
+        for (GameObject waterDrop: waterDrops) {
+            this.gameObjects().addGameObject(waterDrop, Constants.CLOUD_LAYER);
+        }
     }
 
 

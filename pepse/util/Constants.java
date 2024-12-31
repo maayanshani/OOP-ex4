@@ -69,7 +69,6 @@ public final class Constants {
             NUM_EXAMPLE = 1,
             RANDOM_SEED = 42,
             DOUBLE = 2,
-
             NOISE_FACTOR = 200,
             NOISE_GENERATOR_START_POINT = 100,
             SUN_SIZE = 180,
@@ -77,15 +76,14 @@ public final class Constants {
             TREE_TRUNK_WIDTH = 100,
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 400,
-
             NUM_OF_LEAVES_IN_ROW = 7,
-
             MIN_FRUITS_ON_A_TREE = 1,
             MAX_FRUITS_ON_A_TREE = 3,
             FRUIT_ENERGY = 10,
-
             DAY_LONG = 30,
-            CLOUD_CYCLE = 10,
+            CLOUD_CYCLE = 30,
+            DROP_VEL_CYCLE = 8,
+            DROP_OPACITY_CYCLE = 4,
             ENERGY_TEXT_LOCATION = 20,
             ENERGY_TEXT_SIZE = 30,
             NUM_IDLE_FRAMES = 4,
@@ -94,7 +92,11 @@ public final class Constants {
             AVATAR_SIZE = 50,
             COLOR_VARIATION = 10,
             COLOR_MIN = 0,
-            COLOR_MAX = 255;
+            COLOR_MAX = 255,
+            WATER_DROP_FALL_DISTANCE = 1000,
+            MAX_NUM_DROPS = 5,
+            RANDOM_DROP_X = 50,
+            RANDOM_DROP_Y = 10;
 
 
 
@@ -115,10 +117,10 @@ public final class Constants {
             FRUIT_SIZE = 25,
             LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
             LEAF_SPACE = 2,
-            TREE_THRESHOLD = 0.3f,
+            TREE_THRESHOLD = 0.1f,
             LEEF_THRESHOLD = 0.8f,
             FRUIT_THRESHOLD = 0.1f,
-            CLOUD_X_LOCATION_RATIO = 0.15f,
+            CLOUD_X_LOCATION_RATIO = 0.1f,
             WATER_DROP_FINAL_OPACITY = 0F,
             HALF = 0.5f,
             QUARTER = 0.25f;
@@ -127,9 +129,9 @@ public final class Constants {
     /** Layers constants */
     public static final int
             SKY_LAYER = Layer.BACKGROUND,
-            SUN_HALO_LAYER = Layer.STATIC_OBJECTS-20,
-            SUN_LAYER = Layer.STATIC_OBJECTS-10,
-            CLOUD_LAYER = Layer.STATIC_OBJECTS+20,
+            SUN_HALO_LAYER = Layer.STATIC_OBJECTS-30,
+            SUN_LAYER = Layer.STATIC_OBJECTS-20,
+            CLOUD_LAYER = Layer.STATIC_OBJECTS-15,
             TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS-20,
             TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS-10,
             GROUND_LAYER = Layer.STATIC_OBJECTS,
