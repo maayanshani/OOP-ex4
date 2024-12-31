@@ -2,17 +2,12 @@ package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
-import danogl.components.Transition;
 import danogl.gui.ImageReader;
-import danogl.gui.rendering.OvalRenderable;
-import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.PepseGameManager;
 import pepse.util.Constants;
-import pepse.world.Terrain;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -76,7 +71,7 @@ public class Tree extends GameObject {
 
         for (int i = 0; i < Constants.NUM_OF_LEAVES_IN_ROW; i++) {
             for (int j = 0; j < Constants.NUM_OF_LEAVES_IN_ROW; j++) {
-                if (seededRandom.nextFloat() < 0.8) { // 80% chance to create a leaf
+                if (seededRandom.nextFloat() < Constants.LEEF_THRESHOLD) { // 80% chance to create a leaf
                     Vector2 curLeafCoordinate = new Vector2(
                             leavesStartX + i * (Constants.LEAF_SIZE + Constants.LEAF_SPACE),
                             this.trunk.getCenter().y() - j * (Constants.LEAF_SIZE + Constants.LEAF_SPACE));
@@ -140,7 +135,7 @@ public class Tree extends GameObject {
         // create leaves:
         for (int i = 0; i < Constants.NUM_OF_LEAVES_IN_ROW; i++) {
             for (int j = 0; j < Constants.NUM_OF_LEAVES_IN_ROW; j++) {
-                if (seededRandom.nextFloat() < 0.8) { // 80% chance to create a leaf
+                if (seededRandom.nextFloat() < Constants.LEEF_THRESHOLD) { // 80% chance to create a leaf
                     Vector2 curLeafCoordinate = new Vector2(
                             coordinate.x() + i * Constants.LEAF_SIZE,
                             coordinate.y() - j * Constants.LEAF_SIZE);
@@ -152,6 +147,4 @@ public class Tree extends GameObject {
 
         return tree;
     }
-
-
 }

@@ -93,8 +93,12 @@ public class PepseGameManager extends GameManager {
         }
 
         // Add cloud
-        GameObject cloud = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);
-        this.gameObjects().addGameObject(cloud, Constants.CLOUD_LAYER);
+        // Somewhere in initializeGame():
+        Vector2 cloudPosition = new Vector2(100, 50); // Adjust position as needed
+        List<Block> cloudBlocks = Cloud.create(windowDimensions, Constants.CLOUD_CYCLE);
+        for (Block block : cloudBlocks) {
+            this.gameObjects().addGameObject(block, Constants.CLOUD_LAYER);
+        }
 
     }
 

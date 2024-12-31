@@ -115,6 +115,9 @@ public final class Constants {
             FRUIT_SIZE = 40,
             LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
             LEAF_SPACE = 2,
+            LEEF_THRESHOLD = 0.8f,
+            CLOUD_X_LOCATION_RATIO = 0.15f,
+
 
             HALF = 0.5f,
             QUARTER = 0.25f;
