@@ -56,7 +56,8 @@ public final class Constants {
             AVATAR_IDLE_PATH_FORMAT = "assets/idle_%d.png",
             AVATAR_RUN_PATH_FORMAT = "assets/run_%d.png",
             AVATAR_JUMP_PATH_FORMAT = "assets/jump_%d.png",
-            TRUNK_IMAGE_PATH = "assets/trunk.png";
+            TRUNK_IMAGE_PATH = "assets/trunk.png",
+            FRUIT_IMAGE_PATH = "assets/newapple.png";
 
     // System out
     public static final String
@@ -77,6 +78,10 @@ public final class Constants {
 
             NUM_OF_LEAVES_IN_ROW = 8,
 
+            MIN_FRUITS_ON_A_TREE = 1,
+            MAX_FRUITS_ON_A_TREE = 3,
+            FRUIT_ENERGY = 10,
+
             DAY_LONG = 30,
             CLOUD_CYCLE = 10,
             ENERGY_TEXT_LOCATION = 20,
@@ -88,6 +93,8 @@ public final class Constants {
             COLOR_VARIATION = 10,
             COLOR_MIN = 0,
             COLOR_MAX = 255;
+
+
 
 
 
@@ -105,6 +112,7 @@ public final class Constants {
             SCALE_HEIGHT_X0 = (float) 2 / 3,
             HALO_MULT_RATIO = 1.5f,
             LEAF_SIZE = 20,
+            FRUIT_SIZE = 40,
             LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
             LEAF_SPACE = 2,
 
@@ -121,6 +129,8 @@ public final class Constants {
             CLOUD_LAYER = Layer.STATIC_OBJECTS+2,
             TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS+3,
             TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS+4,
+            // TODO: we wanted the avatar and the ground on the same layer?
+            //  + maybe change it to "main layer"?
             AVATAR_LAYER = Layer.DEFAULT,
             NIGHT_LAYER = Layer.DEFAULT+1,
             ENERGY_LAYER = Layer.UI;

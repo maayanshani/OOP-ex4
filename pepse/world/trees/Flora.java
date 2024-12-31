@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Flora {
+    // TODO: where is the right place to put it?
     @FunctionalInterface
     public interface FloatFunction {
         float apply(float x);

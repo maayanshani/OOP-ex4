@@ -18,6 +18,12 @@ import pepse.world.trees.Tree;
 import java.util.List;
 
 public class PepseGameManager extends GameManager {
+    // TODO: where is the right place to put it?
+    @FunctionalInterface
+    public interface ObjectRemoveFunction {
+        void apply(GameObject x, int y);
+    }
+
     private Avatar avatar;
     private Vector2 windowDimensions;
 
@@ -71,16 +77,19 @@ public class PepseGameManager extends GameManager {
 
         // Add trees:
         // TODO: only for tests:
-//        GameObject tree = Tree.create(imageReader, new Vector2(100, 100));
-//        this.gameObjects().addGameObject(tree, Constants.TREES_TRUNKS_LAYER);
         Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
-        Tree tree = new Tree(imageReader, curCoor);
+        Tree tree = new Tree(imageReader, curCoor, this::removeObject);
         // add trunk:
         this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
 
         // add leaves:
         for (GameObject leaf: tree.getLeaves()) {
             this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
+        }
+
+        // add fruits:
+        for (GameObject fruit: tree.getFruits()) {
+            this.gameObjects().addGameObject(fruit, Constants.AVATAR_LAYER);
         }
 
         // Add cloud
@@ -96,6 +105,10 @@ public class PepseGameManager extends GameManager {
 
         // Clamp the avatar's position within window dimensions
         clampAvatarPosition();
+    }
+
+    public void removeObject(GameObject object, int layerIndex) {
+        this.gameObjects().removeGameObject(object, layerIndex);
     }
 
     private void clampAvatarPosition() {
