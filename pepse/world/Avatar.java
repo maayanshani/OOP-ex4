@@ -1,8 +1,3 @@
-/**
- * Represents the avatar in the game, handling movement, animations, energy management, and collisions.
- * The avatar can run, jump, and enter idle states, with corresponding animations.
- * It can also trigger a callback when a jump occurs.
- */
 package pepse.world;
 
 import danogl.GameObject;

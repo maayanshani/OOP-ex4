@@ -27,9 +27,8 @@ import java.awt.*;
 public final class Constants {
 
     /**
-     * TODO: Make sure you add here only constants that are not PRIVATE!
-     * There are some constants that should remain inside their respective classes,
-     * such as BLOCK_SIZE and BASE_GROUND_COLOR.
+     * TODO:1.  BIG BALAGAN her! need to arrange in subjects -> size. location. factors
+     *      2. before assignment delete what we didnt use
      */
 
     /** String constants */
@@ -49,7 +48,8 @@ public final class Constants {
             NIGHT      = "night",
             RUN        = "run",
             JUMP       = "jump",
-            IDLE       = "idle";
+            IDLE       = "idle",
+            WATER_DROP = "water drop";
 
     // image paths
     public static final String
@@ -57,7 +57,8 @@ public final class Constants {
             AVATAR_RUN_PATH_FORMAT = "assets/run_%d.png",
             AVATAR_JUMP_PATH_FORMAT = "assets/jump_%d.png",
             TRUNK_IMAGE_PATH = "assets/trunk.png",
-            FRUIT_IMAGE_PATH = "assets/newapple.png";
+            FRUIT_IMAGE_PATH = "assets/newapple.png",
+            WATER_DROP_IMAGE_PATH = "assets/waterDrop.png";
 
     // System out
     public static final String
@@ -72,6 +73,7 @@ public final class Constants {
             NOISE_FACTOR = 200,
             NOISE_GENERATOR_START_POINT = 100,
             SUN_SIZE = 180,
+            WATER_DROP_SIZE = 20,
             TREE_TRUNK_WIDTH = 100,
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 400,
@@ -96,8 +98,6 @@ public final class Constants {
 
 
 
-
-
     public static final float
             MAX_ENERGY = 100,
             IDLE_ENERGY = 1,
@@ -119,8 +119,7 @@ public final class Constants {
             LEEF_THRESHOLD = 0.8f,
             FRUIT_THRESHOLD = 0.1f,
             CLOUD_X_LOCATION_RATIO = 0.15f,
-
-
+            WATER_DROP_FINAL_OPACITY = 0F,
             HALF = 0.5f,
             QUARTER = 0.25f;
 
