@@ -86,7 +86,6 @@ public class PepseGameManager extends GameManager {
         // Add trees:
         Flora flora = new Flora(this.windowDimensions,
                 terrain::groundHeightAt,
-                this::addObject,
                 imageReader);
 
         for (Tree tree: flora.createInRange(0, (int) windowDimensions.x())) {

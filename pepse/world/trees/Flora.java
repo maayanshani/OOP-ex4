@@ -15,17 +15,14 @@ import java.util.Random;
 public class Flora {
     private final Vector2 windowDimensions;
     private final PepseGameManager.FloatFunction curHeightGetter;
-    private final PepseGameManager.ObjectFunction addObjectFunction;
     private final ImageReader imageReader;
     private static final Random seededRandom = new Random(); // Single instance for consistency
 
     public Flora(Vector2 windowDimensions,
                  PepseGameManager.FloatFunction curHeightGetter,
-                 PepseGameManager.ObjectFunction addObjectFunction,
                  ImageReader imageReader){
         this.windowDimensions = windowDimensions;
         this.curHeightGetter = curHeightGetter;
-        this.addObjectFunction = addObjectFunction;
         this.imageReader = imageReader;
 
         // set Random seed:
