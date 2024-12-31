@@ -21,7 +21,6 @@ public class Leaf {
                 coordinate,
                 new Vector2(Constants.LEAF_SIZE, Constants.LEAF_SIZE),
                 new RectangleRenderable(Constants.LEAF_COLOR));
-        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         leaf.setTag(Constants.LEAF);
 
         // add transition, no need to use the object created

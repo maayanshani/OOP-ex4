@@ -3,6 +3,8 @@ package pepse.world.trees;
 import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.components.CoordinateSpace;
+import danogl.components.ScheduledTask;
+import danogl.components.Transition;
 import danogl.gui.ImageReader;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
@@ -14,32 +16,16 @@ import pepse.world.Avatar;
 import java.util.Objects;
 
 public class Fruit extends GameObject {
-//    // TODO: where is the right place to put it?
-//    @FunctionalInterface
-//    public interface ObjectRemoveFunction {
-//        void apply(GameObject x);
-//    }
 
     private final ImageReader imageReader;
-    private final Vector2 coordinates;
-    private PepseGameManager.ObjectRemoveFunction objectRemoveFunction;
 
-    public Fruit(ImageReader imageReader, Vector2 coordinates, PepseGameManager.ObjectRemoveFunction function) {
+    public Fruit(ImageReader imageReader,
+                 Vector2 coordinates) {
         super(coordinates,
                 new Vector2(Constants.FRUIT_SIZE, Constants.FRUIT_SIZE),
                 imageReader.readImage(Constants.FRUIT_IMAGE_PATH, true));
         this.imageReader = imageReader;
-        this.coordinates = coordinates;
-        this.objectRemoveFunction = function;
 
-//        // create fruit:
-//        Renderable fruitImage = imageReader.readImage(Constants.FRUIT_IMAGE_PATH, true);
-//
-//        GameObject fruit = new GameObject(
-//                coordinate,
-//                new Vector2(Constants.FRUIT_SIZE, Constants.FRUIT_SIZE),
-//                fruitImage);
-        this.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         this.setTag(Constants.FRUIT);
 
     }
@@ -47,33 +33,37 @@ public class Fruit extends GameObject {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        System.out.println("Collision detected here with: " + other.getTag());
+        System.out.println("Fruit class Collision detected with: " + other.getTag());
 
-        // TODO: problem here: other is fruit instead of avatar
-        if (other.getTag().equals(Constants.AVATAR)) {
+        if (other.getTag().equals(Constants.AVATAR) && this.renderer().getRenderable()!=null) {
             // add energy:
             Avatar curAvatar = (Avatar) other;
             curAvatar.addEnergy(Constants.FRUIT_ENERGY);
-            // remove fruit:
+
+            // remove fruit from renderer:
             System.out.println("Removing fruit: " + this.getTag());
-            objectRemoveFunction.apply(this, Constants.AVATAR_LAYER);
+            this.renderer().setRenderable(null);
+
+            // add the next day:
+            addFruit();
+
         }
 
     }
 
-//    public static GameObject create(ImageReader imageReader, Vector2 coordinate) {
-//        // create fruit:
-//        Renderable fruitImage = imageReader.readImage(Constants.FRUIT_IMAGE_PATH, true);
-//
-//        GameObject fruit = new GameObject(
-//                coordinate,
-//                new Vector2(Constants.FRUIT_SIZE, Constants.FRUIT_SIZE),
-//                fruitImage);
-//        fruit.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-//        fruit.setTag(Constants.FRUIT);
-//
-//        return fruit;
+    public void addFruit() {
+        // add fruit after 30 ms:
+        System.out.println("Scheduling task to add fruit back after delay...");
 
-//    }
+        new ScheduledTask(
+                this,
+                Constants.DAY_LONG,
+                false,
+                () -> {
+                    System.out.println("Adding new fruit back to the game.");
+                    this.renderer().setRenderable(imageReader.readImage(Constants.FRUIT_IMAGE_PATH, true));
+                }
+        );
+    }
 
 }

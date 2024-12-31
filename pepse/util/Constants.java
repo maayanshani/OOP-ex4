@@ -76,7 +76,7 @@ public final class Constants {
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 400,
 
-            NUM_OF_LEAVES_IN_ROW = 8,
+            NUM_OF_LEAVES_IN_ROW = 7,
 
             MIN_FRUITS_ON_A_TREE = 1,
             MAX_FRUITS_ON_A_TREE = 3,
@@ -111,11 +111,13 @@ public final class Constants {
             LEAF_MAX_WAIT_TIME = 1f,
             SCALE_HEIGHT_X0 = (float) 2 / 3,
             HALO_MULT_RATIO = 1.5f,
-            LEAF_SIZE = 20,
-            FRUIT_SIZE = 40,
+            LEAF_SIZE = 25,
+            FRUIT_SIZE = 25,
             LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
             LEAF_SPACE = 2,
+            TREE_THRESHOLD = 0.3f,
             LEEF_THRESHOLD = 0.8f,
+            FRUIT_THRESHOLD = 0.1f,
             CLOUD_X_LOCATION_RATIO = 0.15f,
 
 
@@ -126,16 +128,19 @@ public final class Constants {
     /** Layers constants */
     public static final int
             SKY_LAYER = Layer.BACKGROUND,
-            SUN_HALO_LAYER = Layer.STATIC_OBJECTS-2,
-            SUN_LAYER = Layer.STATIC_OBJECTS-1,
+            SUN_HALO_LAYER = Layer.STATIC_OBJECTS-20,
+            SUN_LAYER = Layer.STATIC_OBJECTS-10,
+            CLOUD_LAYER = Layer.STATIC_OBJECTS+20,
+            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS-20,
+            TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS-10,
             GROUND_LAYER = Layer.STATIC_OBJECTS,
-            CLOUD_LAYER = Layer.STATIC_OBJECTS+2,
-            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS+3,
-            TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS+4,
+//            FRUITS_LAYER = Layer.STATIC_OBJECTS+50,
+            // TODO: fruits must be static so the collision will work
+            FRUITS_LAYER = Layer.STATIC_OBJECTS,
             // TODO: we wanted the avatar and the ground on the same layer?
             //  + maybe change it to "main layer"?
             AVATAR_LAYER = Layer.DEFAULT,
-            NIGHT_LAYER = Layer.DEFAULT+1,
+            NIGHT_LAYER = Layer.DEFAULT+10,
             ENERGY_LAYER = Layer.UI;
 
     /** Colors constants */

@@ -13,6 +13,8 @@ import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Flora;
+import pepse.world.trees.Fruit;
 import pepse.world.trees.Tree;
 
 import java.util.List;
@@ -20,8 +22,14 @@ import java.util.List;
 public class PepseGameManager extends GameManager {
     // TODO: where is the right place to put it?
     @FunctionalInterface
-    public interface ObjectRemoveFunction {
+    public interface ObjectFunction {
         void apply(GameObject x, int y);
+    }
+
+    // TODO: where is the right place to put it?
+    @FunctionalInterface
+    public interface FloatFunction {
+        float apply(float x);
     }
 
     private Avatar avatar;
@@ -76,21 +84,43 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().addGameObject(energyDisplay, Constants.ENERGY_LAYER);
 
         // Add trees:
+        Flora flora = new Flora(this.windowDimensions,
+                terrain::groundHeightAt,
+                this::addObject,
+                imageReader);
+
+        for (Tree tree: flora.createInRange(0, (int) windowDimensions.x())) {
+            // add trunk:
+            this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
+
+            // add leaves:
+            for (GameObject leaf: tree.getLeaves()) {
+                this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
+            }
+
+            // add fruits:
+            for (GameObject fruit: tree.getFruits()) {
+                this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
+            }
+
+        }
+
+
         // TODO: only for tests:
-        Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
-        Tree tree = new Tree(imageReader, curCoor, this::removeObject);
-        // add trunk:
-        this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
-
-        // add leaves:
-        for (GameObject leaf: tree.getLeaves()) {
-            this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
-        }
-
-        // add fruits:
-        for (GameObject fruit: tree.getFruits()) {
-            this.gameObjects().addGameObject(fruit, Constants.AVATAR_LAYER);
-        }
+//        Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
+//        Tree tree = new Tree(imageReader, curCoor);
+//        // add trunk:
+//        this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
+//
+//        // add leaves:
+//        for (GameObject leaf: tree.getLeaves()) {
+//            this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
+//        }
+//
+//        // add fruits:
+//        for (GameObject fruit: tree.getFruits()) {
+//            this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
+//        }
 
         // Add cloud
         // Somewhere in initializeGame():
@@ -112,7 +142,13 @@ public class PepseGameManager extends GameManager {
     }
 
     public void removeObject(GameObject object, int layerIndex) {
+        System.out.println("removed");
         this.gameObjects().removeGameObject(object, layerIndex);
+    }
+
+    public void addObject(GameObject object, int layerIndex) {
+        System.out.println("added");
+        this.gameObjects().addGameObject(object);
     }
 
     private void clampAvatarPosition() {
