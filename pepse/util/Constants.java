@@ -3,6 +3,7 @@ package pepse.util;
 import danogl.collisions.Layer;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * A utility class to store commonly used constants throughout the project.
@@ -27,19 +28,15 @@ import java.awt.*;
 public final class Constants {
 
     /**
-     * TODO:1.  BIG BALAGAN her! need to arrange in subjects -> size. location. factors
-     *      2. before assignment delete what we didnt use
+     * TODO:1. before assignment delete what we didnt use
      */
 
     /** String constants */
     public static final String
-            EXAMPLE    = "example",
             AVATAR     = "avatar",
-            BLOCK      = "block",
             GROUND     = "ground",
             SKY        = "sky",
             CLOUD      = "cloud",
-            TERRAIN    = "terrain",
             SUN        = "sun",
             SUN_HALO   = "sunHalo",
             TREE       = "tree",
@@ -66,9 +63,7 @@ public final class Constants {
 
     /** Numeric constants */
     public static final int
-            NUM_EXAMPLE = 1,
             RANDOM_SEED = 42,
-            DOUBLE = 2,
             NOISE_FACTOR = 200,
             NOISE_GENERATOR_START_POINT = 100,
             SUN_SIZE = 180,
@@ -94,9 +89,9 @@ public final class Constants {
             COLOR_MIN = 0,
             COLOR_MAX = 255,
             WATER_DROP_FALL_DISTANCE = 1000,
-            MAX_NUM_DROPS = 5,
-            RANDOM_DROP_X = 50,
-            RANDOM_DROP_Y = 10;
+            MAX_NUM_DROPS = 10,
+            DROP_LOC_X_VARIATION = 100,
+            DROP_LOC_Y_VARIATION = 50;
 
 
 
@@ -111,8 +106,9 @@ public final class Constants {
             LEAF_ANGLE_MIN = 0,
             LEAF_MOVES_TIME = 2f,
             LEAF_MAX_WAIT_TIME = 1f,
-            SCALE_HEIGHT_X0 = (float) 2 / 3,
+            SCALE_HEIGHT_X0 = 2f / 3,
             HALO_MULT_RATIO = 1.5f,
+            MIDNIGHT_OPACITY = 0.5f,
             LEAF_SIZE = 25,
             FRUIT_SIZE = 25,
             LEAF_WIDTH_MIN = LEAF_SIZE*0.75f,
@@ -120,10 +116,9 @@ public final class Constants {
             TREE_THRESHOLD = 0.1f,
             LEEF_THRESHOLD = 0.8f,
             FRUIT_THRESHOLD = 0.1f,
-            CLOUD_X_LOCATION_RATIO = 0.1f,
+            CLOUD_LOCATION_X_RATIO = 0.1f,
             WATER_DROP_FINAL_OPACITY = 0F,
-            HALF = 0.5f,
-            QUARTER = 0.25f;
+            HALF = 0.5f;
 
 
     /** Layers constants */
@@ -147,13 +142,22 @@ public final class Constants {
     /** Colors constants */
     public static final Color
             BASIC_SKY_COLOR = Color.decode("#80C6E5"),
-            // TODO: is it okay to use const for it?
             SUN_HALO_COLOR = new Color(255, 255, 0, 20),
             TRUNK_COLOR = new Color(100, 50, 20),
-            LEAF_COLOR = new Color(50, 200, 30);
+            LEAF_COLOR = new Color(50, 200, 30),
+            BASE_CLOUD_COLOR = new Color(255, 255, 255);
 
+    public static final java.util.List<java.util.List<Integer>> CLOUD_LAYOUT = java.util.List.of(
+            java.util.List.of(0, 0, 1, 1, 0, 0, 0, 0, 0),
+            java.util.List.of(0, 1, 1, 1, 0, 0, 1, 0, 0),
+            java.util.List.of(1, 1, 1, 1, 1, 1, 1, 1, 0),
+            java.util.List.of(1, 1, 1, 1, 1, 1, 1, 1, 1),
+            java.util.List.of(0, 1, 1, 1, 1, 1, 1, 1, 0),
+            java.util.List.of(0, 0, 1, 1, 1, 1, 1, 0, 0),
+            List.of(0, 0, 0, 1, 1, 0, 0, 0, 0)
+    );
+    public static final int NUM_CLOUD_BLOCKS = CLOUD_LAYOUT.size() * CLOUD_LAYOUT.getFirst().size();
 
-    public static final Float MIDNIGHT_OPACITY = 0.5f;
 
 
     /** Boolean constants */

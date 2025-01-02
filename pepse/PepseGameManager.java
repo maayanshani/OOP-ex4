@@ -22,12 +22,15 @@ import java.util.List;
 public class PepseGameManager extends GameManager {
 
     // TODO: where is the right place to put it?
+    // TODO: MAAYAN ANSWER: I think both locations are good
+
     @FunctionalInterface
     public interface ObjectFunction {
         void apply(GameObject x, int y);
     }
 
-    // TODO: where is the right place to put it?
+    // TODO: where is the right place to put it?.
+    // TODO: MAAYAN ANSWER: I think both locations are good
     @FunctionalInterface
     public interface FloatFunction {
         float apply(float x);
@@ -106,6 +109,15 @@ public class PepseGameManager extends GameManager {
 
         }
 
+        // Add cloud
+        this.cloud = new Cloud(windowDimensions, Constants.CLOUD_CYCLE, imageReader);
+        List<Block> cloudBlocks = cloud.getCloudBlocks();
+        for (Block block : cloudBlocks) {
+            this.gameObjects().addGameObject(block, Constants.CLOUD_LAYER);
+        }
+
+        // add callback for rain
+        avatar.setOnJumpCallback(this::createRainJump);
 
         // TODO: only for tests:
 //        Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
@@ -122,16 +134,6 @@ public class PepseGameManager extends GameManager {
 //        for (GameObject fruit: tree.getFruits()) {
 //            this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
 //        }
-
-        // Add cloud
-        this.cloud = new Cloud(windowDimensions, Constants.CLOUD_CYCLE, imageReader);
-        List<Block> cloudBlocks = cloud.getCloudBlocks();
-        for (Block block : cloudBlocks) {
-            this.gameObjects().addGameObject(block, Constants.CLOUD_LAYER);
-        }
-
-        avatar.setOnJumpCallback(this::createRainJump);
-
     }
 
     public void createRainJump(){

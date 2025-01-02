@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
+/** todo
+ * 1. avatar can jump on trunks
+ * 2. trunks hovering above the terrain
+ */
 public class Tree extends GameObject {
 
     private final List<GameObject> leaves = new ArrayList<>();
