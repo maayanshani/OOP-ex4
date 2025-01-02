@@ -7,6 +7,7 @@ import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
+import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
 import pepse.util.Constants;
 import pepse.world.*;
@@ -71,9 +72,11 @@ public class PepseGameManager extends GameManager {
 
         // Add sun and sun halo:
         GameObject sun = Sun.create(windowDimensions, Constants.DAY_LONG);
+        sun.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(sun, Constants.SUN_LAYER);
 
         GameObject sunHalo = SunHalo.create(sun);
+        sunHalo.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(sunHalo, Constants.SUN_HALO_LAYER);
 
         // Add avatar
@@ -86,6 +89,7 @@ public class PepseGameManager extends GameManager {
         EnergyDisplay energyDisplay = new EnergyDisplay(Vector2.ONES.mult(Constants.ENERGY_TEXT_LOCATION),
                 () -> avatar.getEnergy() // Callback to get the avatar's energy
         );
+        energyDisplay.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(energyDisplay, Constants.ENERGY_LAYER);
 
         // Add trees:
@@ -114,10 +118,19 @@ public class PepseGameManager extends GameManager {
         List<Block> cloudBlocks = cloud.getCloudBlocks();
         for (Block block : cloudBlocks) {
             this.gameObjects().addGameObject(block, Constants.CLOUD_LAYER);
+            block.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         }
 
         // add callback for rain
         avatar.setOnJumpCallback(this::createRainJump);
+        Vector2 initialAvatarLocation = new Vector2(windowDimensions.x() / 2,
+                windowDimensions.y() * Constants.SCALE_HEIGHT_X0) ;
+
+        // add camera movement
+        setCamera(new Camera(avatar,
+                windowController.getWindowDimensions().mult(0.5f).subtract(initialAvatarLocation),
+                windowController.getWindowDimensions(),
+                windowController.getWindowDimensions()));
 
         // TODO: only for tests:
 //        Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
@@ -140,6 +153,8 @@ public class PepseGameManager extends GameManager {
         List<GameObject> waterDrops = cloud.createRain(this.gameObjects()::removeGameObject);
         for (GameObject waterDrop: waterDrops) {
             this.gameObjects().addGameObject(waterDrop, Constants.CLOUD_LAYER);
+            waterDrop.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
+
         }
     }
 
@@ -149,7 +164,7 @@ public class PepseGameManager extends GameManager {
         super.update(deltaTime);
 
         // Clamp the avatar's position within window dimensions
-        clampAvatarPosition();
+//        clampAvatarPosition();
     }
 
     public void removeObject(GameObject object, int layerIndex) {

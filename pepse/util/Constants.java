@@ -89,7 +89,7 @@ public final class Constants {
             COLOR_MIN = 0,
             COLOR_MAX = 255,
             WATER_DROP_FALL_DISTANCE = 1000,
-            MAX_NUM_DROPS = 10,
+            MAX_NUM_DROPS = 3,
             DROP_LOC_X_VARIATION = 100,
             DROP_LOC_Y_VARIATION = 50;
 
