@@ -21,6 +21,9 @@ import pepse.world.trees.Tree;
 import java.util.List;
 
 public class PepseGameManager extends GameManager {
+    
+    private int currentLocationX;
+    private Terrain terrain;
 
     // TODO: where is the right place to put it?
     // TODO: MAAYAN ANSWER: I think both locations are good
@@ -59,7 +62,7 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().addGameObject(sky, Constants.SKY_LAYER);
 
         // Add terrain
-        Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
+        this.terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
         List<Block> blockList = terrain.createInRange(0, (int) windowDimensions.x());
         for (Block block : blockList) {
             block.setTag(Constants.GROUND);
@@ -72,15 +75,14 @@ public class PepseGameManager extends GameManager {
 
         // Add sun and sun halo:
         GameObject sun = Sun.create(windowDimensions, Constants.DAY_LONG);
-        sun.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(sun, Constants.SUN_LAYER);
 
         GameObject sunHalo = SunHalo.create(sun);
-        sunHalo.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(sunHalo, Constants.SUN_HALO_LAYER);
 
         // Add avatar
         Vector2 startLocationAvatar = new Vector2(windowDimensions.x() / 2, 0);
+        currentLocationX = (int) startLocationAvatar.x();
         avatar = new Avatar(startLocationAvatar, inputListener, imageReader);
         avatar.setTag(Constants.AVATAR);
         this.gameObjects().addGameObject(avatar, Constants.AVATAR_LAYER);
@@ -123,6 +125,8 @@ public class PepseGameManager extends GameManager {
 
         // add callback for rain
         avatar.setOnJumpCallback(this::createRainJump);
+
+        // add camera movement
         Vector2 initialAvatarLocation = new Vector2(windowDimensions.x() / 2,
                 windowDimensions.y() * Constants.SCALE_HEIGHT_X0) ;
 
@@ -162,9 +166,32 @@ public class PepseGameManager extends GameManager {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        
+        updateCreateWorld();
+
 
         // Clamp the avatar's position within window dimensions
 //        clampAvatarPosition();
+    }
+
+    private void updateCreateWorld() {
+        List<Block> blockList;
+        int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
+        if (currentAvatarLocX > currentLocationX) {
+//            createUpdateWorld(currentAvatarLocX)
+            blockList = terrain.createInRange((int) (currentLocationX + windowDimensions.x()/2),
+                    (int) (currentAvatarLocX + windowDimensions.x()/2));
+
+
+        } else {
+            blockList = terrain.createInRange((int) (currentAvatarLocX - windowDimensions.x() / 2),
+                    (int) (currentLocationX - windowDimensions.x() / 2));
+        }
+        currentLocationX = currentAvatarLocX;
+        for (Block block : blockList) {
+            block.setTag(Constants.GROUND);
+            this.gameObjects().addGameObject(block, Constants.GROUND_LAYER);
+        }
     }
 
     public void removeObject(GameObject object, int layerIndex) {

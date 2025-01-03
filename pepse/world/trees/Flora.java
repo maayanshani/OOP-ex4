@@ -42,7 +42,8 @@ public class Flora {
         for (int x = adjustedMinX; x <= adjustedMaxX; x += Block.SIZE) {
             if (seededRandom.nextFloat() < Constants.TREE_THRESHOLD) { // 10% chance to create a leaf
                 // TODO: fix this using the tree hight
-                float curTreeY = this.windowDimensions.y() - curHeightGetter.apply(x) ;
+                // this is the bottom of the tree
+                float curTreeY = curHeightGetter.apply(x) ;
                 Tree tree = new Tree(imageReader, new Vector2(x, curTreeY));
 //                float treeHeight = tree.getDimensions().y();
 //                tree.setTopLeftCorner(new Vector2(x, curTreeY));

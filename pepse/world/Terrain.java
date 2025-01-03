@@ -18,7 +18,8 @@ import java.util.Random;
 
 
 /**
- * Todo: what should i do with the seed?
+ * Todo: 1. what should we do with the seed?
+ *       2. what should we do with the noiseGenerator? it doens't look good
  */
 
 /**
@@ -62,7 +63,8 @@ public class Terrain {
         this.seed = seed;
 
         // Initialize NoiseGenerator with the seed and starting point
-        noiseGenerator = new NoiseGenerator(seed, Constants.NOISE_GENERATOR_START_POINT);
+        noiseGenerator = new NoiseGenerator(seed, groundHeightAtX0);
+
     }
 
     /**
