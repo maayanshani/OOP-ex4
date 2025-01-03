@@ -18,6 +18,7 @@ import pepse.world.trees.Flora;
 import pepse.world.trees.Fruit;
 import pepse.world.trees.Tree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PepseGameManager extends GameManager {
@@ -43,6 +44,7 @@ public class PepseGameManager extends GameManager {
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Cloud cloud;
+    private ImageReader imageReader;
 
     //    private Vector2 windowDimensions;
     public PepseGameManager() {
@@ -56,6 +58,7 @@ public class PepseGameManager extends GameManager {
                                WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         windowDimensions = windowController.getWindowDimensions();
+        this.imageReader = imageReader;
 
         // Add sky
         GameObject sky = Sky.create(windowDimensions);
@@ -95,25 +98,7 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().addGameObject(energyDisplay, Constants.ENERGY_LAYER);
 
         // Add trees:
-        Flora flora = new Flora(this.windowDimensions,
-                terrain::groundHeightAt,
-                imageReader);
-
-        for (Tree tree: flora.createInRange(0, (int) windowDimensions.x())) {
-            // add trunk:
-            this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
-
-            // add leaves:
-            for (GameObject leaf: tree.getLeaves()) {
-                this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
-            }
-
-            // add fruits:
-            for (GameObject fruit: tree.getFruits()) {
-                this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
-            }
-
-        }
+        addFlora(0, (int) windowDimensions.x());
 
         // Add cloud
         this.cloud = new Cloud(windowDimensions, Constants.CLOUD_CYCLE, imageReader);
@@ -136,8 +121,9 @@ public class PepseGameManager extends GameManager {
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()));
 
+
         // TODO: only for tests:
-//        Vector2 curCoor = new Vector2(100, windowDimensions.y()-terrain.groundHeightAt(100));
+//        Vector2 curCoor = new Vector2(1000, terrain.groundHeightAt(1000)+50);
 //        Tree tree = new Tree(imageReader, curCoor);
 //        // add trunk:
 //        this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
@@ -153,6 +139,32 @@ public class PepseGameManager extends GameManager {
 //        }
     }
 
+    private void addFlora(int startRange, int endRange) {
+
+        Flora flora = new Flora(this.windowDimensions,
+                terrain::groundHeightAt,
+                imageReader);
+
+        List<Tree> trees = flora.createInRange(startRange, endRange);
+
+        for (Tree tree: trees) {
+            // add trunk:
+            this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
+
+            // add leaves:
+            for (GameObject leaf: tree.getLeaves()) {
+                this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
+            }
+
+            // add fruits:
+            for (GameObject fruit: tree.getFruits()) {
+                this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
+            }
+
+        }
+
+    }
+
     public void createRainJump(){
         List<GameObject> waterDrops = cloud.createRain(this.gameObjects()::removeGameObject);
         for (GameObject waterDrop: waterDrops) {
@@ -166,44 +178,129 @@ public class PepseGameManager extends GameManager {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        
-        updateCreateWorld();
-
-
-        // Clamp the avatar's position within window dimensions
-//        clampAvatarPosition();
+        updateCreateWorldTEST();
     }
 
     private void updateCreateWorld() {
         List<Block> blockList;
+
+        // Current location of the avatar
         int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
+
+        // Define the visible range
+        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() / 2);
+        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() / 2);
+
+        // Create new terrain in the visible range
         if (currentAvatarLocX > currentLocationX) {
-//            createUpdateWorld(currentAvatarLocX)
-            blockList = terrain.createInRange((int) (currentLocationX + windowDimensions.x()/2),
-                    (int) (currentAvatarLocX + windowDimensions.x()/2));
-
-
+            blockList = terrain.createInRange(currentLocationX + (int) (windowDimensions.x() / 2), visibleEnd);
         } else {
-            blockList = terrain.createInRange((int) (currentAvatarLocX - windowDimensions.x() / 2),
-                    (int) (currentLocationX - windowDimensions.x() / 2));
+            blockList = terrain.createInRange(visibleStart, currentLocationX - (int) (windowDimensions.x() / 2));
         }
-        currentLocationX = currentAvatarLocX;
+
+        // Add newly created blocks to the game
         for (Block block : blockList) {
             block.setTag(Constants.GROUND);
             this.gameObjects().addGameObject(block, Constants.GROUND_LAYER);
         }
+
+        // Remove blocks outside the visible range
+        int removalMargin = 50; // Allow some buffer beyond the visible range
+        for (GameObject gameObject : gameObjects().objectsInLayer(Constants.GROUND_LAYER)) {
+            if (gameObject instanceof Block) {
+                float blockX = gameObject.getTopLeftCorner().x();
+                if (blockX < visibleStart - removalMargin || blockX > visibleEnd + removalMargin) {
+                    this.gameObjects().removeGameObject(gameObject, Constants.GROUND_LAYER);
+                }
+            }
+        }
+
+        // Update the current location
+        currentLocationX = currentAvatarLocX;
     }
 
+
+    private void updateCreateWorldTEST() {
+        // Current location of the avatar
+        int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
+        float updateThreshold = windowDimensions.x()*Constants.HALF - Constants.VISIBLE_WORLD_MARGIN;
+
+        // visible range:
+        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() / 2);
+        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() / 2);
+
+        if (currentAvatarLocX > currentLocationX) {
+            // Create new world in visible range:
+            addVisibleRange(currentAvatarLocX, currentLocationX + (int) (windowDimensions.x() / 2), visibleEnd);
+
+        } else {
+            addVisibleRange(currentAvatarLocX, visibleStart, currentLocationX - (int) (windowDimensions.x() / 2));
+
+        }
+        removeInvisibleRange(currentAvatarLocX, visibleStart, visibleEnd);
+
+
+        currentLocationX = currentAvatarLocX;
+    }
+
+    private void addVisibleRange(int currentAvatarLocX, int visibleStart, int visibleEnd) {
+        // add new blocks:
+        List<Block> blockList = terrain.createInRange(visibleStart, visibleEnd);
+        for (Block block : blockList) {
+            block.setTag(Constants.GROUND);
+            this.gameObjects().addGameObject(block, Constants.GROUND_LAYER);
+        }
+        // add new Flora:
+        addFlora(visibleStart, visibleEnd);
+
+    }
+
+    private void removeInvisibleRange(int currentAvatarLocX, int visibleStart, int visibleEnd) {
+        // remove blocks:
+        for (GameObject gameObject : gameObjects().objectsInLayer(Constants.GROUND_LAYER)) {
+            if (gameObject.getTag().equals(Constants.GROUND)) {
+                float blockX = gameObject.getTopLeftCorner().x();
+                if (blockX < visibleStart - Constants.VISIBLE_WORLD_MARGIN ||
+                        blockX > visibleEnd + Constants.VISIBLE_WORLD_MARGIN) {
+                    this.gameObjects().removeGameObject(gameObject, Constants.GROUND_LAYER);
+                }
+            }
+        }
+
+        // remove Flora:
+        List<GameObject> treesToRemove = new ArrayList<>();
+
+        for (GameObject gameObject : gameObjects().objectsInLayer(Constants.TREES_TRUNKS_LAYER)) {
+            if (gameObject instanceof Tree) {
+                Tree tree = (Tree) gameObject;
+                float treeX = tree.getTrunk().getTopLeftCorner().x();
+                if (treeX < visibleStart - Constants.VISIBLE_WORLD_MARGIN ||
+                        treeX > visibleEnd + Constants.VISIBLE_WORLD_MARGIN) {
+                    treesToRemove.add(tree.getTrunk());
+                    treesToRemove.addAll(tree.getLeaves());
+                    treesToRemove.addAll(tree.getFruits());
+                }
+            }
+        }
+
+        // Remove all trees that are outside the visible range
+        for (GameObject gameObject : treesToRemove) {
+            this.gameObjects().removeGameObject(gameObject);
+        }
+
+    }
+
+    // TODO: needed?
     public void removeObject(GameObject object, int layerIndex) {
-        System.out.println("removed");
         this.gameObjects().removeGameObject(object, layerIndex);
     }
 
+    // TODO: needed?
     public void addObject(GameObject object, int layerIndex) {
-        System.out.println("added");
         this.gameObjects().addGameObject(object);
     }
 
+    // Only for tests
     private void clampAvatarPosition() {
         Vector2 avatarPosition = avatar.getTopLeftCorner();
 

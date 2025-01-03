@@ -33,7 +33,6 @@ public class Fruit extends GameObject {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        System.out.println("Fruit class Collision detected with: " + other.getTag());
 
         if (other.getTag().equals(Constants.AVATAR) && this.renderer().getRenderable()!=null) {
             // add energy:
@@ -41,7 +40,6 @@ public class Fruit extends GameObject {
             curAvatar.addEnergy(Constants.FRUIT_ENERGY);
 
             // remove fruit from renderer:
-            System.out.println("Removing fruit: " + this.getTag());
             this.renderer().setRenderable(null);
 
             // add the next day:
@@ -52,15 +50,12 @@ public class Fruit extends GameObject {
     }
 
     public void addFruit() {
-        // add fruit after 30 ms:
-        System.out.println("Scheduling task to add fruit back after delay...");
-
+        // add fruit after a day long:
         new ScheduledTask(
                 this,
                 Constants.DAY_LONG,
                 false,
                 () -> {
-                    System.out.println("Adding new fruit back to the game.");
                     this.renderer().setRenderable(imageReader.readImage(Constants.FRUIT_IMAGE_PATH, true));
                 }
         );

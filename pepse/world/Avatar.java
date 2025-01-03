@@ -249,7 +249,8 @@ public class Avatar extends GameObject {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if(other.getTag().equals(Constants.GROUND)){
+        if(other.getTag().equals(Constants.GROUND) || other.getTag().equals(Constants.TRUNK)){
+            System.out.println("collision:" + other.getTag());
             this.transform().setVelocityY(0);
         }
     }

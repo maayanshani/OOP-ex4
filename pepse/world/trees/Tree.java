@@ -22,7 +22,7 @@ public class Tree extends GameObject {
     private final List<GameObject> leaves = new ArrayList<>();
     private final List<GameObject> fruits = new ArrayList<>();
     private final ImageReader imageReader;
-    private GameObject trunk;
+    private Trunk trunk;
     private static final Random seededRandom = new Random(); // Single instance for consistency
     private Vector2 coordinates;
 
@@ -48,15 +48,17 @@ public class Tree extends GameObject {
     }
 
     private void createTrunk() {
-        Renderable trunkImage = imageReader.readImage(Constants.TRUNK_IMAGE_PATH, true);
         float treeTrunkHeight = seededRandom.nextFloat(
                 Constants.TREE_TRUNK_HEIGHT_MIN, Constants.TREE_TRUNK_HEIGHT_MAX);
-        GameObject trunk = new GameObject(
-                coordinates,
-                new Vector2(Constants.TREE_TRUNK_WIDTH, treeTrunkHeight),
-                trunkImage);
-//                new RectangleRenderable(Constants.TRUNK_COLOR));
-        trunk.setTag(Constants.TREE);
+        Vector2 trunkTopLeft = new Vector2(
+                coordinates.x(),
+                coordinates.y() - treeTrunkHeight // Adjust for height
+        );
+
+        Trunk trunk = new Trunk(imageReader,
+                trunkTopLeft,
+                new Vector2(Constants.TREE_TRUNK_WIDTH, treeTrunkHeight));
+
         this.setDimensions(trunk.getDimensions());
         this.trunk = trunk;
 
@@ -85,6 +87,10 @@ public class Tree extends GameObject {
 
             }
         }
+        float newHeight = trunk.getDimensions().y() +
+                Constants.NUM_OF_LEAVES_IN_ROW * (Constants.LEAF_SIZE + Constants.LEAF_SPACE);
+        this.setDimensions(new Vector2(leavesWidth, newHeight));
+
     }
 
     // TODO: no need
@@ -120,74 +126,43 @@ public class Tree extends GameObject {
         return fruits;
     }
 
-    // TODO: this is wrong!
+    // TODO: this is wrong?
     @Override
     public void setCenter(Vector2 center) {
-        super.setCenter(center);
-        this.coordinates = center; // If we are using center, update coordinates accordingly
+        Vector2 offset = center.subtract(trunk.getCenter()); // Calculate the movement offset
+        trunk.setCenter(trunk.getCenter().add(offset)); // Update the trunk position
 
-        // Update the trunk's position
-        trunk.setCenter(center);
-
-        // Update the leaves' positions
+        // Update leaves and fruits positions relative to the trunk
         for (GameObject leaf : leaves) {
-            Vector2 leafOffset = leaf.getCenter().subtract(trunk.getCenter());
-            leaf.setCenter(center.add(leafOffset));
+            leaf.setCenter(leaf.getCenter().add(offset));
+        }
+        for (GameObject fruit : fruits) {
+            fruit.setCenter(fruit.getCenter().add(offset));
         }
 
-        // Update the fruits' positions
-        for (GameObject fruit : fruits) {
-            Vector2 fruitOffset = fruit.getCenter().subtract(trunk.getCenter());
-            fruit.setCenter(center.add(fruitOffset));
-        }
+        // Update the tree's own coordinates
+        super.setCenter(center);
     }
 
-    // TODO: this is wrong!
+
+    // TODO: this is wrong?
     @Override
     public void setTopLeftCorner(Vector2 topLeftCorner) {
+        Vector2 offset = topLeftCorner.subtract(trunk.getTopLeftCorner()); // Calculate the movement offset
+        trunk.setTopLeftCorner(topLeftCorner); // Update the trunk position
+
+        // Update leaves and fruits positions relative to the trunk
+        for (GameObject leaf : leaves) {
+            leaf.setTopLeftCorner(leaf.getTopLeftCorner().add(offset));
+        }
+        for (GameObject fruit : fruits) {
+            fruit.setTopLeftCorner(fruit.getTopLeftCorner().add(offset));
+        }
+
+        // Update the tree's own coordinates
         super.setTopLeftCorner(topLeftCorner);
-        this.coordinates = topLeftCorner; // If we are using topLeftCorner, update coordinates accordingly
-
-        // Update the trunk's position
-        trunk.setTopLeftCorner(topLeftCorner);
-
-        // Update the leaves' positions
-        for (GameObject leaf : leaves) {
-            Vector2 leafOffset = leaf.getTopLeftCorner().subtract(trunk.getTopLeftCorner());
-            leaf.setTopLeftCorner(topLeftCorner.add(leafOffset));
-        }
-
-        // Update the fruits' positions
-        for (GameObject fruit : fruits) {
-            Vector2 fruitOffset = fruit.getTopLeftCorner().subtract(trunk.getTopLeftCorner());
-            fruit.setTopLeftCorner(topLeftCorner.add(fruitOffset));
-        }
+        this.coordinates = topLeftCorner;
     }
 
-    @Override
-    public Vector2 getDimensions() {
-        // Get the dimensions of the trunk
-        Vector2 trunkDimensions = trunk.getDimensions();
-
-        // Define a variable to track the max width and height
-        float maxWidth = trunkDimensions.x();
-        float maxHeight = trunkDimensions.y();
-
-        // Calculate the overall width based on leaves
-        for (GameObject leaf : leaves) {
-            maxWidth = Math.max(maxWidth, leaf.getCenter().x() + leaf.getDimensions().x() / 2);
-        }
-
-        // Calculate the overall height based on leaves and fruits (adjust as needed)
-        for (GameObject leaf : leaves) {
-            maxHeight = Math.max(maxHeight, leaf.getCenter().y() + leaf.getDimensions().y() / 2);
-        }
-        for (GameObject fruit : fruits) {
-            maxHeight = Math.max(maxHeight, fruit.getCenter().y() + fruit.getDimensions().y() / 2);
-        }
-
-        // Return the overall dimensions considering trunk, leaves, and fruits
-        return new Vector2(maxWidth, maxHeight);
-    }
 
 }

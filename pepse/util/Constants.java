@@ -40,6 +40,7 @@ public final class Constants {
             SUN        = "sun",
             SUN_HALO   = "sunHalo",
             TREE       = "tree",
+            TRUNK       = "trunk",
             LEAF       = "leaf",
             FRUIT      = "fruit",
             NIGHT      = "night",
@@ -68,12 +69,14 @@ public final class Constants {
             NOISE_GENERATOR_START_POINT = 700,  // the length of the sinus wave
             SUN_SIZE = 180,
             WATER_DROP_SIZE = 20,
-            TREE_TRUNK_WIDTH = 100,
+            TREE_TRUNK_WIDTH = 300,
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 400,
             NUM_OF_LEAVES_IN_ROW = 7,
             MIN_FRUITS_ON_A_TREE = 1,
             MAX_FRUITS_ON_A_TREE = 3,
+            TRACK_Y_OFFSET = 50,
+            VISIBLE_WORLD_MARGIN = 50,
             FRUIT_ENERGY = 10,
             DAY_LONG = 30,
             CLOUD_CYCLE = 30,
@@ -92,6 +95,7 @@ public final class Constants {
             MAX_NUM_DROPS = 3,
             DROP_LOC_X_VARIATION = 100,
             DROP_LOC_Y_VARIATION = 50;
+
 
 
 
@@ -127,7 +131,8 @@ public final class Constants {
             SUN_HALO_LAYER = Layer.STATIC_OBJECTS-30,
             SUN_LAYER = Layer.STATIC_OBJECTS-20,
             CLOUD_LAYER = Layer.STATIC_OBJECTS-15,
-            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS-20,
+//            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS-20,
+            TREES_TRUNKS_LAYER = Layer.STATIC_OBJECTS,
             TREE_LEAVES_LAYER = Layer.STATIC_OBJECTS-10,
             GROUND_LAYER = Layer.STATIC_OBJECTS,
 //            FRUITS_LAYER = Layer.STATIC_OBJECTS+50,
@@ -138,6 +143,7 @@ public final class Constants {
             AVATAR_LAYER = Layer.DEFAULT,
             NIGHT_LAYER = Layer.DEFAULT+10,
             ENERGY_LAYER = Layer.UI;
+
 
     /** Colors constants */
     public static final Color

@@ -26,27 +26,39 @@ public class Flora {
         this.imageReader = imageReader;
 
         // set Random seed:
-        seededRandom.setSeed(Constants.RANDOM_SEED);
+        // TODO: this is the problem!!!
+//        seededRandom.setSeed(Constants.RANDOM_SEED);
 
     }
 
-    public List<Tree> createInRange(int minX, int maxX) {
+    private int generateSeedForPosition(Vector2 coordinate) {
+        return (int) (coordinate.x() + coordinate.y()) * Constants.RANDOM_SEED;
+    }
 
+
+    public List<Tree> createInRange(int minX, int maxX) {
         List<Tree> trees = new ArrayList<Tree>();
-        // TODO: change from block to trees
-        // Round minX and maxX to bounds divisible by Block.SIZE
+//        Random seededRandom = new Random();
+//        seededRandom.setSeed(Constants.RANDOM_SEED);
+
+
         int adjustedMinX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
         int adjustedMaxX = (int) Math.ceil((double) maxX / Block.SIZE) * Block.SIZE;
 
         // Create trees along the X range
         for (int x = adjustedMinX; x <= adjustedMaxX; x += Block.SIZE) {
+            float curTreeY = curHeightGetter.apply(x) + Constants.TRACK_Y_OFFSET ;
+            Vector2 treeCor = new Vector2(x, curTreeY);
+
+            int seed = generateSeedForPosition(treeCor);
+            seededRandom.setSeed(seed);
+
             if (seededRandom.nextFloat() < Constants.TREE_THRESHOLD) { // 10% chance to create a leaf
-                // TODO: fix this using the tree hight
-                // this is the bottom of the tree
-                float curTreeY = curHeightGetter.apply(x) ;
-                Tree tree = new Tree(imageReader, new Vector2(x, curTreeY));
+                Tree tree = new Tree(imageReader, treeCor);
+//                tree.setTag(Constants.TREE);
+
 //                float treeHeight = tree.getDimensions().y();
-//                tree.setTopLeftCorner(new Vector2(x, curTreeY));
+//                tree.setTopLeftCorner(new Vector2(x, curTreeY - treeHeight));
                 trees.add(tree);
             }
         }
