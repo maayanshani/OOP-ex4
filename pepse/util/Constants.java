@@ -63,9 +63,9 @@ public final class Constants {
 
     /** Numeric constants */
     public static final int
-            RANDOM_SEED = 42,
-            NOISE_FACTOR = 200,
-            NOISE_GENERATOR_START_POINT = 100,
+            RANDOM_SEED = 13,
+            NOISE_FACTOR = 210,                 // the size of the amplitude of the sinus wave
+            NOISE_GENERATOR_START_POINT = 700,  // the length of the sinus wave
             SUN_SIZE = 180,
             WATER_DROP_SIZE = 20,
             TREE_TRUNK_WIDTH = 100,
