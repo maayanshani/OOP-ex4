@@ -2,7 +2,6 @@ package pepse;
 
 import danogl.GameManager;
 import danogl.GameObject;
-import danogl.collisions.Layer;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
@@ -15,7 +14,6 @@ import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Flora;
-import pepse.world.trees.Fruit;
 import pepse.world.trees.Tree;
 
 import java.util.ArrayList;
@@ -115,8 +113,13 @@ public class PepseGameManager extends GameManager {
         Vector2 initialAvatarLocation = new Vector2(windowDimensions.x() / 2,
                 windowDimensions.y() * Constants.SCALE_HEIGHT_X0) ;
 
+
+        // Create the AvatarX GameObject with a callback to get the avatar's x-coordinate
+        AvatarLocationX avatarLocationX = new AvatarLocationX(initialAvatarLocation, () -> avatar.getTopLeftCorner().x());
+        this.gameObjects().addGameObject(avatarLocationX);
+
         // add camera movement
-        setCamera(new Camera(avatar,
+        setCamera(new Camera(avatarLocationX,
                 windowController.getWindowDimensions().mult(0.5f).subtract(initialAvatarLocation),
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()));
