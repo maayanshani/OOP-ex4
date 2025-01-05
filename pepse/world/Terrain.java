@@ -71,11 +71,14 @@ public class Terrain {
      */
     private Color getRandomizedColor() {
         int red = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                Constants.BASE_GROUND_COLOR.getRed() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_GROUND_COLOR.getRed() +
+                        RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1)-Constants.COLOR_VARIATION));
         int green = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                Constants.BASE_GROUND_COLOR.getGreen() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_GROUND_COLOR.getGreen() +
+                        RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1)-Constants.COLOR_VARIATION));
         int blue = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                Constants.BASE_GROUND_COLOR.getBlue() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_GROUND_COLOR.getBlue() +
+                        RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1)-Constants.COLOR_VARIATION));
         return new Color(red, green, blue);
     }
 
@@ -102,7 +105,8 @@ public class Terrain {
             // Create a column of blocks with a fixed depth (TERRAIN_DEPTH)
             for (int y = 0; y < Constants.TERRAIN_DEPTH; y++) {
                 int blockY = (int) groundHeight + (y * Block.SIZE);
-                Renderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(getRandomizedColor()));
+                Renderable renderable =
+                        new RectangleRenderable(ColorSupplier.approximateColor(getRandomizedColor()));
                 Block block = new Block(new Vector2(x, blockY), renderable);
                 block.setTag(Constants.GROUND);
                 blockList.add(block);

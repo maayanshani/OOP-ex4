@@ -87,11 +87,11 @@ public class Tree extends GameObject {
                         leavesStartX + i * (Constants.LEAF_SIZE + Constants.LEAF_SPACE),
                         this.trunk.getCenter().y() - j * (Constants.LEAF_SIZE + Constants.LEAF_SPACE));
 
-                if (seededRandom.nextFloat() < Constants.LEAF_THRESHOLD) { // 80% chance to create a leaf
+                if (seededRandom.nextFloat() < Constants.LEAF_THRESHOLD) {
                     GameObject curLeaf = Leaf.create(curCoordinate);
                     leaves.add(curLeaf);
 
-                } else if (seededRandom.nextFloat() < Constants.FRUIT_THRESHOLD) { // 10% chance to create a fruit
+                } else if (seededRandom.nextFloat() < Constants.FRUIT_THRESHOLD) {
                     Fruit fruit = new Fruit(imageReader, curCoordinate);
                     fruits.add(fruit);
                 }

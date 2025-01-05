@@ -16,7 +16,8 @@ import java.awt.event.KeyEvent;
  * The avatar can move, jump, and interact with the environment, while managing its energy and animations.
  *
  * - Movement includes running and jumping, with configurable velocities and gravity.
- * - Energy management allows for depletion and regeneration based on actions like running, jumping, or idling.
+ * - Energy management allows for depletion and regeneration based on actions like running, jumping,
+ *      or idling.
  * - Animations dynamically update based on the avatar's current state (idle, running, or jumping).
  * - Supports a callback mechanism to notify other components when the avatar jumps.
  *
@@ -214,7 +215,8 @@ public class Avatar extends GameObject {
         }
 
         // Handle jumping
-        if (inputListener.isKeyPressed(KeyEvent.VK_SPACE) && transform().getVelocity().y() == 0 && canJump()) {
+        if (inputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
+                transform().getVelocity().y() == 0 && canJump()) {
             transform().setVelocityY(VELOCITY_Y);
             updateEnergy(Constants.JUMP);
 

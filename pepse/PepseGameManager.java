@@ -60,6 +60,11 @@ public class PepseGameManager extends GameManager {
      */
     @FunctionalInterface
     public interface FloatFunction {
+        /**
+         * Functional interface for a function who gets float and return float
+         * @param x - float number
+         * @return - other float number
+         */
         float apply(float x);
     }
 
@@ -87,8 +92,10 @@ public class PepseGameManager extends GameManager {
         windowDimensions = windowController.getWindowDimensions();
         this.imageReader = imageReader;
 
-        gameObjects().layers().shouldLayersCollide(Constants.FRUITS_LAYER, Constants.AVATAR_LAYER, true);
-        gameObjects().layers().shouldLayersCollide(Constants.TREES_TRUNKS_LAYER, Constants.AVATAR_LAYER, true);
+        gameObjects().layers().shouldLayersCollide(
+                Constants.FRUITS_LAYER, Constants.AVATAR_LAYER, true);
+        gameObjects().layers().shouldLayersCollide(
+                Constants.TREES_TRUNKS_LAYER, Constants.AVATAR_LAYER, true);
 
         // Add sky
         GameObject sky = Sky.create(windowDimensions);
@@ -145,7 +152,8 @@ public class PepseGameManager extends GameManager {
                 windowDimensions.y() * Constants.SCALE_HEIGHT_X0);
 
         // Create the AvatarX GameObject with a callback to get the avatar's x-coordinate
-        AvatarLocationX avatarLocationX = new AvatarLocationX(initialAvatarLocation, () -> avatar.getTopLeftCorner().x());
+        AvatarLocationX avatarLocationX = new AvatarLocationX(initialAvatarLocation, () ->
+                avatar.getTopLeftCorner().x());
         this.gameObjects().addGameObject(avatarLocationX);
 
         setCamera(new Camera(avatarLocationX,
@@ -213,9 +221,13 @@ public class PepseGameManager extends GameManager {
         int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() * Constants.HALF);
 
         if (currentAvatarLocX > currentLocationX) {
-            addVisibleRange(currentLocationX + (int) (windowDimensions.x() * Constants.HALF), visibleEnd);
+            addVisibleRange(
+                    currentLocationX + (int) (windowDimensions.x() * Constants.HALF),
+                    visibleEnd);
         } else {
-            addVisibleRange(visibleStart, currentLocationX - (int) (windowDimensions.x() * Constants.HALF));
+            addVisibleRange(
+                    visibleStart,
+                    currentLocationX - (int) (windowDimensions.x() * Constants.HALF));
         }
         removeInvisibleRange(visibleStart, visibleEnd);
 

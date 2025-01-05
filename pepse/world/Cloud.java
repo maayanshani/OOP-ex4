@@ -72,11 +72,14 @@ public class Cloud {
      */
     private Color getRandomizedColor() {
         int red = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                Constants.BASE_CLOUD_COLOR.getRed() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_CLOUD_COLOR.getRed() +
+                        RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1)-Constants.COLOR_VARIATION));
         int green = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                Constants.BASE_CLOUD_COLOR.getGreen() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_CLOUD_COLOR.getGreen() +
+                        RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1)-Constants.COLOR_VARIATION));
         int blue = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                Constants.BASE_CLOUD_COLOR.getBlue() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_CLOUD_COLOR.getBlue() +
+                        RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1)-Constants.COLOR_VARIATION));
         return new Color(red, green, blue);
     }
 
@@ -84,7 +87,8 @@ public class Cloud {
      * Creates the cloud blocks based on a predefined layout and adds a horizontal movement transition.
      */
     private void createCloudBlocks() {
-        Vector2 topLeftCorner = new Vector2(0, windowDimensions.y() * Constants.CLOUD_LOCATION_X_RATIO);
+        Vector2 topLeftCorner =
+                new Vector2(0, windowDimensions.y() * Constants.CLOUD_LOCATION_X_RATIO);
 
         for (int i = 0; i < CLOUD_LAYOUT.size(); i++) {
             for (int j = 0; j < CLOUD_LAYOUT.get(i).size(); j++) {
@@ -157,8 +161,10 @@ public class Cloud {
 
             GameObject waterDrop = rainPool.removeFirst();
             if (waterDrop != null) {
-                float offsetX = random.nextFloat(-Constants.DROP_LOC_X_VARIATION, Constants.DROP_LOC_X_VARIATION);
-                float offsetY = random.nextFloat(-Constants.DROP_LOC_Y_VARIATION, Constants.DROP_LOC_Y_VARIATION);
+                float offsetX = random.nextFloat(
+                        -Constants.DROP_LOC_X_VARIATION, Constants.DROP_LOC_X_VARIATION);
+                float offsetY = random.nextFloat(
+                        -Constants.DROP_LOC_Y_VARIATION, Constants.DROP_LOC_Y_VARIATION);
                 Vector2 dropPosition = cloudCenter.add(new Vector2(offsetX, offsetY));
 
                 Rain.initializeRainTransition(waterDrop, dropPosition, drop -> {
