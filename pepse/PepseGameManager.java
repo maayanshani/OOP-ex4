@@ -107,7 +107,7 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().addGameObject(night, Constants.NIGHT_LAYER);
 
         // Add sun and sun halo
-        GameObject sun = Sun.create(windowDimensions, Constants.DAY_LONG);
+        GameObject sun = Sun.create(imageReader, windowDimensions, Constants.DAY_LONG);
         this.gameObjects().addGameObject(sun, Constants.SUN_LAYER);
 
         GameObject sunHalo = SunHalo.create(sun);

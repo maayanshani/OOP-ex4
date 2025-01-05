@@ -1,0 +1,30 @@
+maayanshani,rotem.garti
+319111886,207869520
+
+## Answers to Questions
+Implement of the tree package:
+Our tree package have 5 classes:
+- Fruit - Represents a fruit object in the game world. We added this class so the Fruit objects will be
+unique objects who inheritance GameObject, in order to be able to add special collision policy, and also to
+be able to remove and add the fruits in a simple and easy way.
+- Leaf - This is an utility class for creating and managing leaf objects in the game world.
+The leaf didnt required special collision policy or other special methods, so we didn't created them as new
+class who inheritance from GameObject, but just as a show of GameObject.
+- Trunk - Represents the tree trunk object in the game world. Like the fruit, they required special
+operations (Like a collision with the avatar), so we wanted them to be a new class who inheritance
+GameObject.
+- Tree - A Facade class, represents a Tree object in the game world.
+This class contains the Fruit class, the leaf utility class and the trunk class and create a whole tree.
+That way, when we create the Flora for the whole world we can just create Tree objects without being
+bothered with all the details the tree required (implement the Encapsulation concept and the open-close
+principle).
+- Flora - As required in the extractions, this is a utility class who handles the creation and management
+of trees in the game world. This class only contain the Tree class. We also used Callback to use the terrain
+method (groundHeightAt) without needing to contain Terrain object, and by that our design is simpler
+and cleaner.
+
+We didnt use design templates in this design beside the Tree Facade.
+
+Changes in the API:
+We changed the Sun.create method signature in order to add an image to the sun (we added ImageReader
+parameter), instead of a yellow circle, because we thought it will make the game more fun :)

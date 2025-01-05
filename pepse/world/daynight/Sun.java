@@ -3,6 +3,7 @@ package pepse.world.daynight;
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
+import danogl.gui.ImageReader;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
 import pepse.util.Constants;
@@ -21,9 +22,10 @@ public class Sun {
      *
      * @param windowDimensions Dimensions of the game window.
      * @param cycleLength The time (in seconds) for the sun to complete a full cycle.
+     * @param imageReader An ImageReader instance used to load the image for the sun.
      * @return A GameObject representing the sun.
      */
-    public static GameObject create(Vector2 windowDimensions, float cycleLength) {
+    public static GameObject create(ImageReader imageReader, Vector2 windowDimensions, float cycleLength) {
         // Terrain object for determining ground height.
         Terrain terrain = new Terrain(windowDimensions, Constants.RANDOM_SEED);
 
@@ -36,7 +38,7 @@ public class Sun {
         GameObject sun = new GameObject(
                 initialSunCenter, // Initial position (updated by the Transition)
                 new Vector2(Constants.SUN_SIZE, Constants.SUN_SIZE),
-                new OvalRenderable(Color.YELLOW));
+                imageReader.readImage(Constants.SUN_IMAGE_PATH, true));
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sun.setTag(Constants.SUN);
 
