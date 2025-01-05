@@ -2,6 +2,7 @@ package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.collisions.Collision;
+import danogl.components.GameObjectPhysics;
 import danogl.gui.ImageReader;
 import danogl.util.Vector2;
 import pepse.util.Constants;
@@ -15,6 +16,8 @@ public class Trunk extends GameObject {
                 dimensions,
                 imageReader.readImage(Constants.TRUNK_IMAGE_PATH, true));
         this.setTag(Constants.TRUNK);
+        physics().preventIntersectionsFromDirection(Vector2.ZERO);
+        physics().setMass(GameObjectPhysics.IMMOVABLE_MASS);
     }
 
     @Override
@@ -26,6 +29,7 @@ public class Trunk extends GameObject {
             other.transform().setVelocityY(0);
 
         }
+
 
     }
 

@@ -23,26 +23,15 @@ public class PepseGameManager extends GameManager {
     
     private int currentLocationX;
     private Terrain terrain;
-
-    // TODO: where is the right place to put it?
-    // TODO: MAAYAN ANSWER: I think both locations are good
-
-    @FunctionalInterface
-    public interface ObjectFunction {
-        void apply(GameObject x, int y);
-    }
-
-    // TODO: where is the right place to put it?.
-    // TODO: MAAYAN ANSWER: I think both locations are good
-    @FunctionalInterface
-    public interface FloatFunction {
-        float apply(float x);
-    }
-
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Cloud cloud;
     private ImageReader imageReader;
+
+    @FunctionalInterface
+    public interface FloatFunction {
+        float apply(float x);
+    }
 
     //    private Vector2 windowDimensions;
     public PepseGameManager() {
@@ -57,6 +46,9 @@ public class PepseGameManager extends GameManager {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         windowDimensions = windowController.getWindowDimensions();
         this.imageReader = imageReader;
+
+        gameObjects().layers().shouldLayersCollide(Constants.FRUITS_LAYER, Constants.AVATAR_LAYER,true);
+        gameObjects().layers().shouldLayersCollide(Constants.TREES_TRUNKS_LAYER, Constants.AVATAR_LAYER,true);
 
         // Add sky
         GameObject sky = Sky.create(windowDimensions);
@@ -82,7 +74,7 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().addGameObject(sunHalo, Constants.SUN_HALO_LAYER);
 
         // Add avatar
-        Vector2 startLocationAvatar = new Vector2(windowDimensions.x() / 2, 0);
+        Vector2 startLocationAvatar = new Vector2(windowDimensions.x() *Constants.HALF, 0);
         currentLocationX = (int) startLocationAvatar.x();
         avatar = new Avatar(startLocationAvatar, inputListener, imageReader);
         avatar.setTag(Constants.AVATAR);
@@ -110,7 +102,7 @@ public class PepseGameManager extends GameManager {
         avatar.setOnJumpCallback(this::createRainJump);
 
         // add camera movement
-        Vector2 initialAvatarLocation = new Vector2(windowDimensions.x() / 2,
+        Vector2 initialAvatarLocation = new Vector2(windowDimensions.x()*Constants.HALF,
                 windowDimensions.y() * Constants.SCALE_HEIGHT_X0) ;
 
 
@@ -144,9 +136,7 @@ public class PepseGameManager extends GameManager {
 
     private void addFlora(int startRange, int endRange) {
 
-        Flora flora = new Flora(this.windowDimensions,
-                terrain::groundHeightAt,
-                imageReader);
+        Flora flora = new Flora(terrain::groundHeightAt, imageReader);
 
         List<Tree> trees = flora.createInRange(startRange, endRange);
 
@@ -181,24 +171,24 @@ public class PepseGameManager extends GameManager {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        updateCreateWorldTEST();
+        updateCreateWorld();
     }
 
-    private void updateCreateWorld() {
+    private void updateCreateWorldTEST() {
         List<Block> blockList;
 
         // Current location of the avatar
         int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
 
         // Define the visible range
-        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() / 2);
-        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() / 2);
+        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() * Constants.HALF);
+        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() *Constants.HALF);
 
         // Create new terrain in the visible range
         if (currentAvatarLocX > currentLocationX) {
-            blockList = terrain.createInRange(currentLocationX + (int) (windowDimensions.x() / 2), visibleEnd);
+            blockList = terrain.createInRange(currentLocationX + (int) (windowDimensions.x()*Constants.HALF), visibleEnd);
         } else {
-            blockList = terrain.createInRange(visibleStart, currentLocationX - (int) (windowDimensions.x() / 2));
+            blockList = terrain.createInRange(visibleStart, currentLocationX - (int) (windowDimensions.x() * Constants.HALF));
         }
 
         // Add newly created blocks to the game
@@ -223,25 +213,24 @@ public class PepseGameManager extends GameManager {
     }
 
 
-    private void updateCreateWorldTEST() {
+    private void updateCreateWorld() {
         // Current location of the avatar
         int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
         float updateThreshold = windowDimensions.x()*Constants.HALF - Constants.VISIBLE_WORLD_MARGIN;
 
         // visible range:
-        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() / 2);
-        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() / 2);
+        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() * Constants.HALF);
+        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() * Constants.HALF);
 
+        // Create new world in visible range:
         if (currentAvatarLocX > currentLocationX) {
-            // Create new world in visible range:
-            addVisibleRange(currentAvatarLocX, currentLocationX + (int) (windowDimensions.x() / 2), visibleEnd);
+            addVisibleRange(currentAvatarLocX, currentLocationX + (int) (windowDimensions.x() * Constants.HALF), visibleEnd);
 
         } else {
-            addVisibleRange(currentAvatarLocX, visibleStart, currentLocationX - (int) (windowDimensions.x() / 2));
+            addVisibleRange(currentAvatarLocX, visibleStart, currentLocationX - (int) (windowDimensions.x() *Constants.HALF));
 
         }
-        removeInvisibleRange(currentAvatarLocX, visibleStart, visibleEnd);
-
+        removeInvisibleRange(visibleStart, visibleEnd);
 
         currentLocationX = currentAvatarLocX;
     }
@@ -258,20 +247,23 @@ public class PepseGameManager extends GameManager {
 
     }
 
-    private void removeInvisibleRange(int currentAvatarLocX, int visibleStart, int visibleEnd) {
+    private void removeInvisibleRange(int visibleStart, int visibleEnd) {
+        List<GameObject> objectsToRemove = new ArrayList<>();
+
         // remove blocks:
         for (GameObject gameObject : gameObjects().objectsInLayer(Constants.GROUND_LAYER)) {
             if (gameObject.getTag().equals(Constants.GROUND)) {
                 float blockX = gameObject.getTopLeftCorner().x();
                 if (blockX < visibleStart - Constants.VISIBLE_WORLD_MARGIN ||
                         blockX > visibleEnd + Constants.VISIBLE_WORLD_MARGIN) {
-                    this.gameObjects().removeGameObject(gameObject, Constants.GROUND_LAYER);
+//                    this.gameObjects().removeGameObject(gameObject, Constants.GROUND_LAYER);
+                    objectsToRemove.add(gameObject);
+
                 }
             }
         }
 
         // remove Flora:
-        List<GameObject> treesToRemove = new ArrayList<>();
 
         for (GameObject gameObject : gameObjects().objectsInLayer(Constants.TREES_TRUNKS_LAYER)) {
             if (gameObject instanceof Tree) {
@@ -279,15 +271,15 @@ public class PepseGameManager extends GameManager {
                 float treeX = tree.getTrunk().getTopLeftCorner().x();
                 if (treeX < visibleStart - Constants.VISIBLE_WORLD_MARGIN ||
                         treeX > visibleEnd + Constants.VISIBLE_WORLD_MARGIN) {
-                    treesToRemove.add(tree.getTrunk());
-                    treesToRemove.addAll(tree.getLeaves());
-                    treesToRemove.addAll(tree.getFruits());
+                    objectsToRemove.add(tree.getTrunk());
+                    objectsToRemove.addAll(tree.getLeaves());
+                    objectsToRemove.addAll(tree.getFruits());
                 }
             }
         }
 
         // Remove all trees that are outside the visible range
-        for (GameObject gameObject : treesToRemove) {
+        for (GameObject gameObject : objectsToRemove) {
             this.gameObjects().removeGameObject(gameObject);
         }
 

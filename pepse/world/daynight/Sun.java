@@ -3,6 +3,7 @@ package pepse.world.daynight;
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
+import danogl.gui.ImageReader;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
@@ -25,6 +26,7 @@ public class Sun {
                 initialSunCenter, // doesn't matter  because the Transition
                 new Vector2(Constants.SUN_SIZE, Constants.SUN_SIZE),
                 new OvalRenderable(Color.YELLOW));
+//                imageReader.readImage(Constants.SUN_IMAGE_PATH, true));
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sun.setTag(Constants.SUN);
 
