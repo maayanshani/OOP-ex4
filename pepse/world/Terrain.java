@@ -18,19 +18,12 @@ import java.util.Random;
 
 
 /**
- * Todo: 1. what should we do with the seed?
- *       2. what should we do with the noiseGenerator? it doens't look good
- */
-
-/**
  * Represents the terrain in the game world, managing the creation and layout of blocks
  * that form the ground. The terrain dynamically generates blocks based on a noise function,
  * providing a natural and varied appearance.
- *
  * - The terrain height is calculated using a Perlin noise generator.
  * - Blocks are created in columns to represent the ground and its depth.
  * - The terrain supports dynamic generation for a specified horizontal range.
- *
  * This class allows for easy integration of procedurally generated ground into the game.
  */
 public class Terrain {
@@ -42,12 +35,6 @@ public class Terrain {
 
     /** The base height of the ground at the x = 0 position. */
     private final int groundHeightAtX0;
-
-    /** The base color of the terrain blocks. */
-    private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
-
-    /** The depth of the terrain in terms of the number of blocks below the surface. */
-    private static final int TERRAIN_DEPTH = 20;
 
     /** Random number generator for color variation. */
     private static final Random RANDOM = new Random();
@@ -84,11 +71,11 @@ public class Terrain {
      */
     private Color getRandomizedColor() {
         int red = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                BASE_GROUND_COLOR.getRed() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_GROUND_COLOR.getRed() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
         int green = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                BASE_GROUND_COLOR.getGreen() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_GROUND_COLOR.getGreen() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
         int blue = Math.min(Constants.COLOR_MAX, Math.max(Constants.COLOR_MIN,
-                BASE_GROUND_COLOR.getBlue() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
+                Constants.BASE_GROUND_COLOR.getBlue() + RANDOM.nextInt(2 * Constants.COLOR_VARIATION + 1) - Constants.COLOR_VARIATION));
         return new Color(red, green, blue);
     }
 
@@ -113,7 +100,7 @@ public class Terrain {
             float groundHeight = (float) Math.floor(groundHeightAt(x) / Block.SIZE) * Block.SIZE;
 
             // Create a column of blocks with a fixed depth (TERRAIN_DEPTH)
-            for (int y = 0; y < TERRAIN_DEPTH; y++) {
+            for (int y = 0; y < Constants.TERRAIN_DEPTH; y++) {
                 int blockY = (int) groundHeight + (y * Block.SIZE);
                 Renderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(getRandomizedColor()));
                 Block block = new Block(new Vector2(x, blockY), renderable);

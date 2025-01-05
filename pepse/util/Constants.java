@@ -115,8 +115,6 @@ public final class Constants {
             TREE_TRUNK_HEIGHT_MIN = 200,
             TREE_TRUNK_HEIGHT_MAX = 300,
             NUM_OF_LEAVES_IN_ROW = 7,
-            MIN_FRUITS_ON_A_TREE = 1,
-            MAX_FRUITS_ON_A_TREE = 3,
             TRACK_Y_OFFSET = 50,
             FRUIT_ENERGY = 10;
     public static final float
@@ -145,6 +143,7 @@ public final class Constants {
 
     // Terrain constant:
     public static final int
+            TERRAIN_DEPTH = 20,
             NOISE_FACTOR = 210;              // the size of the amplitude of the sinus wave
     public static final float
             SCALE_HEIGHT_X0 = 2f / 3;
@@ -169,7 +168,9 @@ public final class Constants {
             SUN_HALO_COLOR = new Color(255, 255, 0, 20),
             TRUNK_COLOR = new Color(100, 50, 20),
             LEAF_COLOR = new Color(50, 200, 30),
+            BASE_GROUND_COLOR = new Color(212, 123, 74),
             BASE_CLOUD_COLOR = new Color(255, 255, 255);
+
 
     public static final java.util.List<java.util.List<Integer>> CLOUD_LAYOUT = java.util.List.of(
             java.util.List.of(0, 0, 1, 1, 0, 0, 0, 0, 0),

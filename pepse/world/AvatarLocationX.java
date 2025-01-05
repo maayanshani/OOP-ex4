@@ -24,6 +24,12 @@ public class AvatarLocationX extends GameObject {
         this.xPositionSupplier = xPositionSupplier;
     }
 
+    /**
+     * Updates the position of the GameObject by modifying only its x-coordinate.
+     * The x-coordinate is updated based on the value provided by the xPositionSupplier.
+     *
+     * @param deltaTime The time passed since the last update.
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);

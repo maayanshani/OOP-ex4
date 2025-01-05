@@ -19,25 +19,65 @@ import pepse.world.trees.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the game, including initialization and updates of game objects such as terrain,
+ * avatar, clouds, flora and environmental elements like the sun and night cycle.
+ */
 public class PepseGameManager extends GameManager {
-    
+
+    /**
+     * The current X-coordinate location of the avatar.
+     */
     private int currentLocationX;
+
+    /**
+     * The terrain manager responsible for generating and managing terrain blocks.
+     */
     private Terrain terrain;
+
+    /**
+     * The dimensions of the game window.
+     */
     private Vector2 windowDimensions;
+
+    /**
+     * The avatar controlled by the player.
+     */
     private Avatar avatar;
+
+    /**
+     * The cloud manager responsible for generating clouds and rain.
+     */
     private Cloud cloud;
+
+    /**
+     * The image reader for loading textures and sprites.
+     */
     private ImageReader imageReader;
 
+    /**
+     * Functional interface for a function that takes a float and returns a float.
+     */
     @FunctionalInterface
     public interface FloatFunction {
         float apply(float x);
     }
 
-    //    private Vector2 windowDimensions;
+    /**
+     * Default constructor for the PepseGameManager.
+     */
     public PepseGameManager() {
         super();
     }
 
+    /**
+     * Initializes the game by setting up all game objects, layers, and the environment.
+     *
+     * @param imageReader Used to read images and textures.
+     * @param soundReader Used to read sound files.
+     * @param inputListener Listens for user input events.
+     * @param windowController Controls the game window.
+     */
     @Override
     public void initializeGame(ImageReader imageReader,
                                SoundReader soundReader,
@@ -47,8 +87,8 @@ public class PepseGameManager extends GameManager {
         windowDimensions = windowController.getWindowDimensions();
         this.imageReader = imageReader;
 
-        gameObjects().layers().shouldLayersCollide(Constants.FRUITS_LAYER, Constants.AVATAR_LAYER,true);
-        gameObjects().layers().shouldLayersCollide(Constants.TREES_TRUNKS_LAYER, Constants.AVATAR_LAYER,true);
+        gameObjects().layers().shouldLayersCollide(Constants.FRUITS_LAYER, Constants.AVATAR_LAYER, true);
+        gameObjects().layers().shouldLayersCollide(Constants.TREES_TRUNKS_LAYER, Constants.AVATAR_LAYER, true);
 
         // Add sky
         GameObject sky = Sky.create(windowDimensions);
@@ -66,7 +106,7 @@ public class PepseGameManager extends GameManager {
         GameObject night = Night.create(windowDimensions, Constants.DAY_LONG);
         this.gameObjects().addGameObject(night, Constants.NIGHT_LAYER);
 
-        // Add sun and sun halo:
+        // Add sun and sun halo
         GameObject sun = Sun.create(windowDimensions, Constants.DAY_LONG);
         this.gameObjects().addGameObject(sun, Constants.SUN_LAYER);
 
@@ -74,7 +114,7 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().addGameObject(sunHalo, Constants.SUN_HALO_LAYER);
 
         // Add avatar
-        Vector2 startLocationAvatar = new Vector2(windowDimensions.x() *Constants.HALF, 0);
+        Vector2 startLocationAvatar = new Vector2(windowDimensions.x() * Constants.HALF, 0);
         currentLocationX = (int) startLocationAvatar.x();
         avatar = new Avatar(startLocationAvatar, inputListener, imageReader);
         avatar.setTag(Constants.AVATAR);
@@ -82,12 +122,11 @@ public class PepseGameManager extends GameManager {
 
         // Add energy display
         EnergyDisplay energyDisplay = new EnergyDisplay(Vector2.ONES.mult(Constants.ENERGY_TEXT_LOCATION),
-                () -> avatar.getEnergy() // Callback to get the avatar's energy
-        );
+                () -> avatar.getEnergy()); // Callback to get the avatar's energy
         energyDisplay.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(energyDisplay, Constants.ENERGY_LAYER);
 
-        // Add trees:
+        // Add trees
         addFlora(0, (int) windowDimensions.x());
 
         // Add cloud
@@ -98,173 +137,127 @@ public class PepseGameManager extends GameManager {
             block.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
         }
 
-        // add callback for rain
+        // Add callback for rain
         avatar.setOnJumpCallback(this::createRainJump);
 
-        // add camera movement
-        Vector2 initialAvatarLocation = new Vector2(windowDimensions.x()*Constants.HALF,
-                windowDimensions.y() * Constants.SCALE_HEIGHT_X0) ;
-
+        // Add camera movement
+        Vector2 initialAvatarLocation = new Vector2(windowDimensions.x() * Constants.HALF,
+                windowDimensions.y() * Constants.SCALE_HEIGHT_X0);
 
         // Create the AvatarX GameObject with a callback to get the avatar's x-coordinate
         AvatarLocationX avatarLocationX = new AvatarLocationX(initialAvatarLocation, () -> avatar.getTopLeftCorner().x());
         this.gameObjects().addGameObject(avatarLocationX);
 
-        // add camera movement
         setCamera(new Camera(avatarLocationX,
                 windowController.getWindowDimensions().mult(0.5f).subtract(initialAvatarLocation),
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()));
-
-
-        // TODO: only for tests:
-//        Vector2 curCoor = new Vector2(1000, terrain.groundHeightAt(1000)+50);
-//        Tree tree = new Tree(imageReader, curCoor);
-//        // add trunk:
-//        this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
-//
-//        // add leaves:
-//        for (GameObject leaf: tree.getLeaves()) {
-//            this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
-//        }
-//
-//        // add fruits:
-//        for (GameObject fruit: tree.getFruits()) {
-//            this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
-//        }
     }
 
+    /**
+     * Adds flora (trees and related elements) to the specified range in the game world.
+     *
+     * @param startRange The start of the range.
+     * @param endRange The end of the range.
+     */
     private void addFlora(int startRange, int endRange) {
-
         Flora flora = new Flora(terrain::groundHeightAt, imageReader);
 
         List<Tree> trees = flora.createInRange(startRange, endRange);
 
-        for (Tree tree: trees) {
-            // add trunk:
+        for (Tree tree : trees) {
+            // Add trunk
             this.gameObjects().addGameObject(tree.getTrunk(), Constants.TREES_TRUNKS_LAYER);
 
-            // add leaves:
-            for (GameObject leaf: tree.getLeaves()) {
+            // Add leaves
+            for (GameObject leaf : tree.getLeaves()) {
                 this.gameObjects().addGameObject(leaf, Constants.TREE_LEAVES_LAYER);
             }
 
-            // add fruits:
-            for (GameObject fruit: tree.getFruits()) {
+            // Add fruits
+            for (GameObject fruit : tree.getFruits()) {
                 this.gameObjects().addGameObject(fruit, Constants.FRUITS_LAYER);
             }
-
         }
-
     }
 
-    public void createRainJump(){
+    /**
+     * Creates rain when the avatar jumps.
+     */
+    public void createRainJump() {
         List<GameObject> waterDrops = cloud.createRain(this.gameObjects()::removeGameObject);
-        for (GameObject waterDrop: waterDrops) {
+        for (GameObject waterDrop : waterDrops) {
             this.gameObjects().addGameObject(waterDrop, Constants.CLOUD_LAYER);
             waterDrop.setCoordinateSpace(danogl.components.CoordinateSpace.CAMERA_COORDINATES);
-
         }
     }
 
-
+    /**
+     * Updates the game state in each frame.
+     *
+     * @param deltaTime Time elapsed since the last frame.
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         updateCreateWorld();
     }
 
-    private void updateCreateWorldTEST() {
-        List<Block> blockList;
-
-        // Current location of the avatar
-        int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
-
-        // Define the visible range
-        int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() * Constants.HALF);
-        int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() *Constants.HALF);
-
-        // Create new terrain in the visible range
-        if (currentAvatarLocX > currentLocationX) {
-            blockList = terrain.createInRange(currentLocationX + (int) (windowDimensions.x()*Constants.HALF), visibleEnd);
-        } else {
-            blockList = terrain.createInRange(visibleStart, currentLocationX - (int) (windowDimensions.x() * Constants.HALF));
-        }
-
-        // Add newly created blocks to the game
-        for (Block block : blockList) {
-            block.setTag(Constants.GROUND);
-            this.gameObjects().addGameObject(block, Constants.GROUND_LAYER);
-        }
-
-        // Remove blocks outside the visible range
-        int removalMargin = 50; // Allow some buffer beyond the visible range
-        for (GameObject gameObject : gameObjects().objectsInLayer(Constants.GROUND_LAYER)) {
-            if (gameObject instanceof Block) {
-                float blockX = gameObject.getTopLeftCorner().x();
-                if (blockX < visibleStart - removalMargin || blockX > visibleEnd + removalMargin) {
-                    this.gameObjects().removeGameObject(gameObject, Constants.GROUND_LAYER);
-                }
-            }
-        }
-
-        // Update the current location
-        currentLocationX = currentAvatarLocX;
-    }
-
-
+    /**
+     * Updates the creation of new game world elements based on the avatar's current location.
+     */
     private void updateCreateWorld() {
-        // Current location of the avatar
         int currentAvatarLocX = (int) avatar.getTopLeftCorner().x();
-        float updateThreshold = windowDimensions.x()*Constants.HALF - Constants.VISIBLE_WORLD_MARGIN;
 
-        // visible range:
         int visibleStart = (int) (currentAvatarLocX - windowDimensions.x() * Constants.HALF);
         int visibleEnd = (int) (currentAvatarLocX + windowDimensions.x() * Constants.HALF);
 
-        // Create new world in visible range:
         if (currentAvatarLocX > currentLocationX) {
-            addVisibleRange(currentAvatarLocX, currentLocationX + (int) (windowDimensions.x() * Constants.HALF), visibleEnd);
-
+            addVisibleRange(currentLocationX + (int) (windowDimensions.x() * Constants.HALF), visibleEnd);
         } else {
-            addVisibleRange(currentAvatarLocX, visibleStart, currentLocationX - (int) (windowDimensions.x() *Constants.HALF));
-
+            addVisibleRange(visibleStart, currentLocationX - (int) (windowDimensions.x() * Constants.HALF));
         }
         removeInvisibleRange(visibleStart, visibleEnd);
 
         currentLocationX = currentAvatarLocX;
     }
 
-    private void addVisibleRange(int currentAvatarLocX, int visibleStart, int visibleEnd) {
-        // add new blocks:
+    /**
+     * Adds visible game elements to the specified range based on the avatar's location.
+     *
+     * @param visibleStart The start of the visible range.
+     * @param visibleEnd The end of the visible range.
+     */
+    private void addVisibleRange(int visibleStart, int visibleEnd) {
         List<Block> blockList = terrain.createInRange(visibleStart, visibleEnd);
         for (Block block : blockList) {
             block.setTag(Constants.GROUND);
             this.gameObjects().addGameObject(block, Constants.GROUND_LAYER);
         }
-        // add new Flora:
         addFlora(visibleStart, visibleEnd);
-
     }
 
+    /**
+     * Removes game elements that are outside the visible range.
+     *
+     * @param visibleStart The start of the visible range.
+     * @param visibleEnd The end of the visible range.
+     */
     private void removeInvisibleRange(int visibleStart, int visibleEnd) {
         List<GameObject> objectsToRemove = new ArrayList<>();
 
-        // remove blocks:
+        // Remove blocks
         for (GameObject gameObject : gameObjects().objectsInLayer(Constants.GROUND_LAYER)) {
             if (gameObject.getTag().equals(Constants.GROUND)) {
                 float blockX = gameObject.getTopLeftCorner().x();
                 if (blockX < visibleStart - Constants.VISIBLE_WORLD_MARGIN ||
                         blockX > visibleEnd + Constants.VISIBLE_WORLD_MARGIN) {
-//                    this.gameObjects().removeGameObject(gameObject, Constants.GROUND_LAYER);
                     objectsToRemove.add(gameObject);
-
                 }
             }
         }
 
-        // remove Flora:
-
+        // Remove flora
         for (GameObject gameObject : gameObjects().objectsInLayer(Constants.TREES_TRUNKS_LAYER)) {
             if (gameObject instanceof Tree) {
                 Tree tree = (Tree) gameObject;
@@ -278,38 +271,17 @@ public class PepseGameManager extends GameManager {
             }
         }
 
-        // Remove all trees that are outside the visible range
         for (GameObject gameObject : objectsToRemove) {
             this.gameObjects().removeGameObject(gameObject);
         }
-
     }
 
-    // TODO: needed?
-    public void removeObject(GameObject object, int layerIndex) {
-        this.gameObjects().removeGameObject(object, layerIndex);
-    }
-
-    // TODO: needed?
-    public void addObject(GameObject object, int layerIndex) {
-        this.gameObjects().addGameObject(object);
-    }
-
-    // Only for tests
-    private void clampAvatarPosition() {
-        Vector2 avatarPosition = avatar.getTopLeftCorner();
-
-        // Limit avatar's position within the screen boundaries
-        float clampedX = Math.max(0, Math.min(avatarPosition.x(),
-                windowDimensions.x() - avatar.getDimensions().x()));
-        float clampedY = Math.max(0, avatarPosition.y()); // Allow falling below screen if needed
-
-        // Update the avatar's position
-        avatar.transform().setTopLeftCorner(new Vector2(clampedX, clampedY));
-    }
-
+    /**
+     * Entry point for the Pepse game application.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         new PepseGameManager().run();
-
     }
 }

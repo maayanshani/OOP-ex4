@@ -252,11 +252,5 @@ public class Avatar extends GameObject {
         if(other.getTag().equals(Constants.GROUND) || other.getTag().equals(Constants.TRUNK)){
             this.transform().setVelocityY(0);
         }
-        if(other.getTag().equals(Constants.TRUNK)){
-            System.out.println("Stopping avatar on " + other.getTag()); // Debug log
-//            Vector2 avatarPosition = this.transform().getTopLeftCorner();
-//            avatarPosition = new Vector2(avatarPosition.x(), other.transform().getTopLeftCorner().y() - this.getDimensions().y());
-//            this.transform().setTopLeftCorner(avatarPosition);
-        }
     }
 }

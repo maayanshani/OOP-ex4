@@ -1,52 +1,61 @@
 package pepse.world.trees;
 
 import danogl.GameObject;
-import danogl.components.CoordinateSpace;
 import danogl.gui.ImageReader;
-import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.PepseGameManager;
 import pepse.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-/** todo
- * 1. avatar can jump on trunks
- * 2. trunks hovering above the terrain
+/**
+ * Represents a Tree object in the game world.
+ * A tree consists of a trunk, leaves, and fruits.
  */
 public class Tree extends GameObject {
 
+    /** A list of leaves attached to the tree. */
     private final List<GameObject> leaves = new ArrayList<>();
-    private final List<GameObject> fruits = new ArrayList<>();
+    /** A list of fruits attached to the tree. */
+    private final List<Fruit> fruits = new ArrayList<>();
+    /** ImageReader instance for rendering images for the tree components. */
     private final ImageReader imageReader;
+    /** Represents the trunk of the tree. */
     private Trunk trunk;
-    private static final Random seededRandom = new Random(); // Single instance for consistency
+    /** A single Random instance for consistent randomization of tree properties. */
+    private static final Random seededRandom = new Random();
+    /** The top-left corner coordinates of the tree. */
     private Vector2 coordinates;
 
-
+    /**
+     * Constructs a Tree object at the given coordinates.
+     * Initializes the trunk, leaves, and fruits based on randomized properties.
+     *
+     * @param imageReader An ImageReader instance to load images for tree components.
+     * @param coordinates The top-left corner coordinates of the tree in the game world.
+     */
     public Tree(ImageReader imageReader,
                 Vector2 coordinates) {
         super(coordinates, Vector2.ZERO, null);
         this.imageReader = imageReader;
         this.coordinates = coordinates;
 
-        // set Random seed:
+        // Set Random seed:
         seededRandom.setSeed(Constants.RANDOM_SEED);
 
-        // create trunk:
+        // Create trunk:
         createTrunk();
 
-        // create leaves and Fruits:
+        // Create leaves and fruits:
         createLeavesAndFruits();
-
-        // create fruits:
-//        createFruits();
 
     }
 
+    /**
+     * Creates the trunk of the tree with randomized height.
+     * Sets the dimensions of the Tree object to match the trunk height.
+     */
     private void createTrunk() {
         float treeTrunkHeight = seededRandom.nextFloat(
                 Constants.TREE_TRUNK_HEIGHT_MIN, Constants.TREE_TRUNK_HEIGHT_MAX);
@@ -61,10 +70,12 @@ public class Tree extends GameObject {
 
         this.setDimensions(trunk.getDimensions());
         this.trunk = trunk;
-
     }
 
-
+    /**
+     * Creates leaves and fruits for the tree.
+     * Leaves are created with a higher probability than fruits, and their positions are randomized.
+     */
     private void createLeavesAndFruits() {
         float leavesWidth = Constants.NUM_OF_LEAVES_IN_ROW * (Constants.LEAF_SIZE + Constants.LEAF_SPACE);
         float leavesStartX = trunk.getCenter().x() - leavesWidth / 2;
@@ -77,92 +88,86 @@ public class Tree extends GameObject {
                         this.trunk.getCenter().y() - j * (Constants.LEAF_SIZE + Constants.LEAF_SPACE));
 
                 if (seededRandom.nextFloat() < Constants.LEAF_THRESHOLD) { // 80% chance to create a leaf
-                    GameObject curLeaf = Leaf.create(imageReader, curCoordinate);
+                    GameObject curLeaf = Leaf.create(curCoordinate);
                     leaves.add(curLeaf);
 
                 } else if (seededRandom.nextFloat() < Constants.FRUIT_THRESHOLD) { // 10% chance to create a fruit
                     Fruit fruit = new Fruit(imageReader, curCoordinate);
                     fruits.add(fruit);
                 }
-
             }
         }
         float newHeight = trunk.getDimensions().y() +
                 Constants.NUM_OF_LEAVES_IN_ROW * (Constants.LEAF_SIZE + Constants.LEAF_SPACE);
         this.setDimensions(new Vector2(leavesWidth, newHeight));
-
-    }
-
-    // TODO: no need
-    private void createFruits() {
-        float leavesWidth = Constants.NUM_OF_LEAVES_IN_ROW * (Constants.LEAF_SIZE + Constants.LEAF_SPACE);
-        float leavesStartX = trunk.getCenter().x() - leavesWidth * Constants.HALF;
-        float leavesStartY = trunk.getCenter().y() - leavesWidth * Constants.HALF;
-
-
-        // get random num of fruits on the tree:
-        int numFruits = seededRandom.nextInt(Constants.MIN_FRUITS_ON_A_TREE, Constants.MAX_FRUITS_ON_A_TREE);
-        for (int i = 0; i < numFruits; i++) {
-            // get random location:
-            float fruitX = seededRandom.nextFloat(leavesStartX, leavesStartX+leavesWidth);
-            float fruitY = seededRandom.nextFloat(leavesStartY, leavesStartY+leavesWidth);
-            GameObject fruit = new Fruit(imageReader, new Vector2(fruitX, fruitY));
-
-            fruits.add(fruit);
-        }
-
     }
 
 
+    /**
+     * Retrieves the trunk of the tree.
+     *
+     * @return The trunk GameObject of the tree.
+     */
     public GameObject getTrunk() {
         return trunk;
     }
 
+    /**
+     * Retrieves the list of leaves attached to the tree.
+     *
+     * @return A list of GameObjects representing the leaves.
+     */
     public List<GameObject> getLeaves() {
         return leaves;
     }
 
-    public List<GameObject> getFruits() {
+    /**
+     * Retrieves the list of fruits attached to the tree.
+     *
+     * @return A list of Fruits.
+     */
+    public List<Fruit> getFruits() {
         return fruits;
     }
 
-    // TODO: this is wrong?
+    /**
+     * Updates the center of the tree and its components (trunk, leaves, fruits).
+     *
+     * @param center The new center position of the tree.
+     */
     @Override
     public void setCenter(Vector2 center) {
-        Vector2 offset = center.subtract(trunk.getCenter()); // Calculate the movement offset
-        trunk.setCenter(trunk.getCenter().add(offset)); // Update the trunk position
+        Vector2 offset = center.subtract(trunk.getCenter());
+        trunk.setCenter(trunk.getCenter().add(offset));
 
-        // Update leaves and fruits positions relative to the trunk
         for (GameObject leaf : leaves) {
             leaf.setCenter(leaf.getCenter().add(offset));
         }
-        for (GameObject fruit : fruits) {
+        for (Fruit fruit : fruits) {
             fruit.setCenter(fruit.getCenter().add(offset));
         }
 
-        // Update the tree's own coordinates
         super.setCenter(center);
     }
 
-
-    // TODO: this is wrong?
+    /**
+     * Updates the top-left corner of the tree and its components (trunk, leaves, fruits).
+     *
+     * @param topLeftCorner The new top-left corner position of the tree.
+     */
     @Override
     public void setTopLeftCorner(Vector2 topLeftCorner) {
-        Vector2 offset = topLeftCorner.subtract(trunk.getTopLeftCorner()); // Calculate the movement offset
-        trunk.setTopLeftCorner(topLeftCorner); // Update the trunk position
+        Vector2 offset = topLeftCorner.subtract(trunk.getTopLeftCorner());
+        trunk.setTopLeftCorner(topLeftCorner);
 
-        // Update leaves and fruits positions relative to the trunk
         for (GameObject leaf : leaves) {
             leaf.setTopLeftCorner(leaf.getTopLeftCorner().add(offset));
         }
-        for (GameObject fruit : fruits) {
+        for (Fruit fruit : fruits) {
             fruit.setTopLeftCorner(fruit.getTopLeftCorner().add(offset));
         }
 
-        // Update the tree's own coordinates
         super.setTopLeftCorner(topLeftCorner);
         this.coordinates = topLeftCorner;
     }
-
-
 }
