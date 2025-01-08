@@ -27,7 +27,7 @@ import java.util.List;
  */
 public final class Constants {
     /** <h2> String constants </h2>*/
-    // Tags:
+    // Objects' Tags:
     public static final String
             AVATAR     = "avatar",
             GROUND     = "ground",
@@ -62,24 +62,26 @@ public final class Constants {
 
     /** <h2> Numeric constants </h2>*/
 
-    // General constant:
+    /** General constant: **/
     public static final int
             RANDOM_SEED = 13,
+            /** Constants for color manipulation for the Cloud and Terrain: **/
             COLOR_VARIATION = 10,
             COLOR_MIN = 0,
             COLOR_MAX = 255;
     public static final float
             HALF = 0.5f;
 
-    // Sun constant:
+    /** Sun constant: **/
     public static final int
             SUN_SIZE = 180;
     public static final float
             SUN_ANGLE_MAX = 360,
             SUN_ANGLE_MIN = 0,
+            /** The ratio between the SunHalo and the Sun sizes: **/
             HALO_MULT_RATIO = 1.5f;
 
-    // Cloud constant:
+    /** Cloud constant: **/
     public static final int
             WATER_DROP_SIZE = 20,
             CLOUD_CYCLE = 30,
@@ -87,13 +89,14 @@ public final class Constants {
             DROP_OPACITY_CYCLE = 4,
             WATER_DROP_FALL_DISTANCE = 1000,
             MAX_NUM_DROPS = 3,
+            /** Constants for rain manipulation: **/
             DROP_LOC_X_VARIATION = 100,
             DROP_LOC_Y_VARIATION = 50;
     public static final float
             CLOUD_LOCATION_X_RATIO = 0.1f,
             WATER_DROP_FINAL_OPACITY = 0F;
 
-    // Energy Constants:
+    /** Energy Constants: **/
     public static final int
             ENERGY_TEXT_LOCATION = 20,
             ENERGY_TEXT_SIZE = 30;
@@ -103,13 +106,13 @@ public final class Constants {
             RUN_ENERGY = 0.5F,
             JUMP_ENERGY = 10;
 
-    // Day and Night constants:
+    /** Day and Night constants: **/
     public static final int
             DAY_LONG = 30;
     public static final float
             MIDNIGHT_OPACITY = 0.5f;
 
-    // Flora constant:
+    /** Flora constant: **/
     public static final int
             TREE_TRUNK_WIDTH = 40,
             TREE_TRUNK_HEIGHT_MIN = 200,
@@ -130,18 +133,18 @@ public final class Constants {
             LEAF_THRESHOLD = 0.8f,
             FRUIT_THRESHOLD = 0.1f;
 
-    // Endless world constants:
+    /** Endless world constants: **/
     public static final int
             VISIBLE_WORLD_MARGIN = 50;
 
-    // Avatar world constants:
+    /** Avatar world constants: **/
     public static final int
             NUM_IDLE_FRAMES = 4,
             NUM_RUN_FRAMES = 6,
             NUM_JUMP_FRAMES = 4,
             AVATAR_SIZE = 50;
 
-    // Terrain constant:
+    /** Terrain constant: **/
     public static final int
             TERRAIN_DEPTH = 20,
             NOISE_FACTOR = 210;              // the size of the amplitude of the sinus wave
@@ -166,7 +169,6 @@ public final class Constants {
     public static final Color
             BASIC_SKY_COLOR = Color.decode("#80C6E5"),
             SUN_HALO_COLOR = new Color(255, 255, 0, 20),
-            TRUNK_COLOR = new Color(100, 50, 20),
             LEAF_COLOR = new Color(50, 200, 30),
             BASE_GROUND_COLOR = new Color(212, 123, 74),
             BASE_CLOUD_COLOR = new Color(255, 255, 255);

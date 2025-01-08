@@ -23,7 +23,21 @@ of trees in the game world. This class only contain the Tree class. We also used
 method (groundHeightAt) without needing to contain Terrain object, and by that our design is simpler
 and cleaner.
 
-We didnt use design templates in this design beside the Tree Facade.
+Implement of the Cloud:
+We created two classes:
+- Cloud - Represents a cloud object composed of individual blocks that move horizontally across the screen.
+It provides the functionality to generate and manage clouds and initiate rainfall using the Rain class.
+Like the Tree class, the Cloud class manage the whole functionality of the cloud and simplifies the process
+of creating and managing clouds in the game world without without being bothered with all the details it
+required (including the raining).
+- Rain - Like the leaf class, this is a utility class who uses static methods, to handle raindrop creation
+and transition initialization.
+Our design separates the creation of raindrops from their transition logic. This ensures that the game
+remains responsive by preloading raindrops and managing their transitions independently.
+
+Another design choices:
+We added to some of our classes' constructors or "creat" methods ImageReader parameter, used to add images
+to the game instead of simple round and squares objects (sun, fruits, trunks).
 
 Changes in the API:
 We changed the Sun.create method signature in order to add an image to the sun (we added ImageReader
