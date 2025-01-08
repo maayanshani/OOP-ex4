@@ -37,7 +37,7 @@ remains responsive by preloading raindrops and managing their transitions indepe
 
 Another design choices:
 We added to some of our classes' constructors or "creat" methods ImageReader parameter, used to add images
-to the game instead of simple round and squares objects (sun, fruits, trunks).
+to the game instead of simple round and squares objects (sun, fruits, trunks, rain).
 
 Changes in the API:
 We changed the Sun.create method signature in order to add an image to the sun (we added ImageReader
