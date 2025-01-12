@@ -4,6 +4,7 @@ import danogl.collisions.Layer;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A utility class to store commonly used constants throughout the project.
@@ -64,7 +65,7 @@ public final class Constants {
 
     /** General constant: **/
     public static final int
-            RANDOM_SEED = 13,
+            RANDOM_SEED = new Random().nextInt(),
             /** Constants for color manipulation for the Cloud and Terrain: **/
             COLOR_VARIATION = 10,
             COLOR_MIN = 0,
